@@ -1,0 +1,39 @@
+package company.tap.tapnetworkkit_android.connection;
+
+/**
+ * The type Api constants.
+ */
+public final class API_Constants {
+
+    /**
+     * The Auth token key.
+     */
+    public static final String AUTH_TOKEN_KEY = "Authorization";
+    /**
+     * The Auth token prefix.
+     */
+    public static final String AUTH_TOKEN_PREFIX = "Bearer ";
+    /**
+     * The Application.
+     */
+    public static final String APPLICATION = "Application";
+    /**
+     * The Content type key.
+     */
+    public static final String CONTENT_TYPE_KEY = "content-type";
+    /**
+     * The Content type value.
+     */
+    public static final String CONTENT_TYPE_VALUE = "application/json";
+    /**
+     * The Accept key.
+     */
+    public static final String ACCEPT_KEY = "Accept";
+    /**
+     * The Accept value.
+     */
+    public static final String ACCEPT_VALUE = "application/json";
+
+
+
+}
