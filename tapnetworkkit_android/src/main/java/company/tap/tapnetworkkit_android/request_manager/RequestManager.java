@@ -1,5 +1,6 @@
 package company.tap.tapnetworkkit_android.request_manager;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class RequestManager{
         }else{
 
             Toast.makeText(context, context.getResources().getString(R.string.internet_connectivity_message), Toast.LENGTH_LONG).show();
+
         }
 
 
@@ -107,24 +109,7 @@ public class RequestManager{
         void run() {
             request.enqueue(new BaseCallback<>(requestCallback));
         }
-
-        /**
-         * Fail.
-         *
-         * @param errorDetails the error details
-         */
-        void fail(GoSellError errorDetails) {
-            requestCallback.onFailure(errorDetails);
-        }
-
-        /**
-         * Get request call.
-         *
-         * @return the call
-         */
-        Call getRequest(){
-            return this.request;
-        }
+        
     }
 
 
