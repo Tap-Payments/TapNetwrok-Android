@@ -1,7 +1,6 @@
 package company.tap.tapnetworkkit_android.connection;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,7 +19,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * The type Retrofit helper.
  */
-@RestrictTo(RestrictTo.Scope.LIBRARY)
 public final class RetrofitHelper {
     private static Retrofit retrofit;
     private static APIRequestInterface helper;

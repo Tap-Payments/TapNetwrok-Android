@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         }
         if(v.getId()==R.id.button_Delete){
             /**
-             * Sending dummy values to check delete request*/
+             * Sending dummy values to check delete request**/
             NetworkClient.getInstance().deleteCard("cus_10000","83921741382", this,getBaseContext());
 
         }

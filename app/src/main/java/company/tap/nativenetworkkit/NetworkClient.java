@@ -20,6 +20,9 @@ public class NetworkClient {
     private APIRequestInterface apiRequestInterface;
 
      private NetworkClient() {
+         /**
+          *Required to set baseURL on retrofit
+          */
          apiRequestInterface = RetrofitHelper.getApiHelper(API_Methods.BASE_URL);
         requestManager = new RequestManager(apiRequestInterface);
 

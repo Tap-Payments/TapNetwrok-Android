@@ -1,7 +1,6 @@
 package company.tap.tapnetworkkit_android.interfaces;
 
 
-import androidx.annotation.RestrictTo;
 
 import com.google.gson.JsonObject;
 
@@ -16,7 +15,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Url;
 
 
-@RestrictTo(RestrictTo.Scope.LIBRARY)
+
 public interface APIRequestInterface {
 
     @POST()

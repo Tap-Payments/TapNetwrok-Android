@@ -1,6 +1,5 @@
 package company.tap.tapnetworkkit_android.interfaces;
 
-import androidx.annotation.RestrictTo;
 
 import company.tap.tapnetworkkit_android.exception_handling.GoSellError;
 import retrofit2.Response;
@@ -11,7 +10,6 @@ import retrofit2.Response;
  *
  * @param <T> {@link Class} implementing {@link BaseResponse} interface
  */
-@RestrictTo(RestrictTo.Scope.LIBRARY)
 public interface APIRequestCallback<T extends BaseResponse> {
     /**
      * Success callback. Request is considered as successful when response code is between 200 and 299

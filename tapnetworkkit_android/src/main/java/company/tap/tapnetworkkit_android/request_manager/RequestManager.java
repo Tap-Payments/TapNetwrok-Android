@@ -1,10 +1,8 @@
 package company.tap.tapnetworkkit_android.request_manager;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.widget.Toast;
 
-import androidx.annotation.RestrictTo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +10,6 @@ import java.util.ArrayList;
 import company.tap.tapnetworkkit_android.R;
 import company.tap.tapnetworkkit_android.interfaces.APIRequestCallback;
 import company.tap.tapnetworkkit_android.callbacks.BaseCallback;
-import company.tap.tapnetworkkit_android.exception_handling.GoSellError;
 import company.tap.tapnetworkkit_android.interfaces.APIRequestInterface;
 import company.tap.tapnetworkkit_android.interfaces.BaseResponse;
 import company.tap.tapnetworkkit_android.utils.NetworkUtils;
@@ -23,13 +20,10 @@ import retrofit2.Call;
 /**
  * The type Request manager.
  */
-@RestrictTo(RestrictTo.Scope.LIBRARY)
+
 public class RequestManager{
     private APIRequestInterface apiRequestInterface;
 
-
-    //all requests are wrapped in DelayedRequest, until init() would be finished
-    private boolean initIsRunning;
     private ArrayList<TapRequest> tapRequests;
 
     /**
