@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
 
     @Override
     public void onFailure(GoSellError errorDetails) {
-
+        lo.g(errorDetails.getErrorBody());
     }
 
 
