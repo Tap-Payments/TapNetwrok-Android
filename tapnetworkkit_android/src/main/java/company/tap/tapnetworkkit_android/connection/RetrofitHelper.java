@@ -9,7 +9,7 @@ import com.google.gson.GsonBuilder;
 import java.util.concurrent.TimeUnit;
 
 import company.tap.tapnetworkkit_android.BuildConfig;
-import company.tap.tapnetworkkit_android.exceptionEngine.NoAuthTokenProvidedException;
+import company.tap.tapnetworkkit_android.exception_handling.NoAuthTokenProvidedException;
 import company.tap.tapnetworkkit_android.interfaces.APIRequestInterface;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -31,7 +31,7 @@ public final class RetrofitHelper {
      * @return the api helper
      */
     @Nullable
-    public static APIRequestInterface getApiHelper(String url) {
+    public static APIRequestInterface getApiHelper(String baseUrl) {
         /**
          * Lazy loading
          */
@@ -42,7 +42,7 @@ public final class RetrofitHelper {
 
             OkHttpClient okHttpClient = getOkHttpClient();
             retrofit = new Retrofit.Builder()
-                    .baseUrl(url)
+                    .baseUrl(baseUrl)
                     .addConverterFactory(buildGsonConverter())
                     .client(okHttpClient)
                     .build();

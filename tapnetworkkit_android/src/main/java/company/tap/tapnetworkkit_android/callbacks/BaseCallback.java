@@ -2,12 +2,11 @@ package company.tap.tapnetworkkit_android.callbacks;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.JsonObject;
-
 import java.io.IOException;
 
-import company.tap.tapnetworkkit_android.exceptionEngine.GoSellError;
-import company.tap.tapnetworkkit_android.response.BaseResponse;
+import company.tap.tapnetworkkit_android.exception_handling.GoSellError;
+import company.tap.tapnetworkkit_android.interfaces.APIRequestCallback;
+import company.tap.tapnetworkkit_android.interfaces.BaseResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;

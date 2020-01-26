@@ -1,34 +1,35 @@
 package company.tap.tapnetworkkit_android.request_manager;
 
-import android.util.Log;
+import android.content.Context;
+import android.widget.Toast;
 
 import androidx.annotation.RestrictTo;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import company.tap.tapnetworkkit_android.callbacks.APIRequestCallback;
+import company.tap.tapnetworkkit_android.R;
+import company.tap.tapnetworkkit_android.interfaces.APIRequestCallback;
 import company.tap.tapnetworkkit_android.callbacks.BaseCallback;
-import company.tap.tapnetworkkit_android.exceptionEngine.GoSellError;
+import company.tap.tapnetworkkit_android.exception_handling.GoSellError;
 import company.tap.tapnetworkkit_android.interfaces.APIRequestInterface;
-import company.tap.tapnetworkkit_android.response.BaseResponse;
-import company.tap.tapnetworkkit_android.response.GenericResponse;
+import company.tap.tapnetworkkit_android.interfaces.BaseResponse;
+import company.tap.tapnetworkkit_android.utils.NetworkUtils;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import okio.Buffer;
 import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * The type Request manager.
  */
 @RestrictTo(RestrictTo.Scope.LIBRARY)
-public class RequestManager {
+public class RequestManager{
     private APIRequestInterface apiRequestInterface;
+
 
     //all requests are wrapped in DelayedRequest, until init() would be finished
     private boolean initIsRunning;
-    private ArrayList<DelayedRequest> delayedRequests;
+    private ArrayList<TapRequest> tapRequests;
 
     /**
      * Instantiates a new Request manager.
@@ -37,76 +38,27 @@ public class RequestManager {
      */
     public RequestManager(APIRequestInterface apiRequestInterface) {
         this.apiRequestInterface = apiRequestInterface;
-        delayedRequests = new ArrayList<>();
+        tapRequests = new ArrayList<>();
+
+
     }
 
     /**
      * Request.
      *
-     * @param delayedRequest the delayed request
+     * @param tapRequest the delayed request
      */
-    public void request(DelayedRequest delayedRequest, boolean checkInit) {
-        delayedRequests.add(delayedRequest);
-        //todo add checking for secret key added or not
-        if (checkInit) {
-            if (!initIsRunning) {
-                //init();
-            }
-        } else {
-            runDelayedRequests();
+    public void request(TapRequest tapRequest,Context context) {
+        tapRequests.add(tapRequest);
+
+        if(NetworkUtils.isNetworkConnected(context)){
+            tapRequest.run();
+        }else{
+
+            Toast.makeText(context, context.getResources().getString(R.string.internet_connectivity_message), Toast.LENGTH_LONG).show();
         }
-    }
-
-    /**
-     * Retrieve SDKSettings from server.
-     */
-    private void init() {
-        initIsRunning = true;
 
 
-        apiRequestInterface.getRequest("init")
-                .enqueue(new BaseCallback(new APIRequestCallback<GenericResponse>() {
-
-                    @Override
-                    public void onSuccess(int responseCode, Response serializedResponse) {
-                        initIsRunning = false;
-
-                        runDelayedRequests();
-                    }
-
-                    @Override
-            public void onFailure(GoSellError errorDetails) {
-                        initIsRunning = false;
-                        failDelayedRequests(errorDetails);
-            }
-        }));
-
-    }
-
-
-    private void runDelayedRequests() {
-        for (DelayedRequest delayedRequest : delayedRequests) {
-//            Log.d("runDelayedRequests","delayedRequest.toString() : " + delayedRequest.getRequest().request());
-            try {
-                final Buffer buffer = new Buffer();
-                if(delayedRequest.getRequest().request().body()!=null ) {
-                    delayedRequest.getRequest().request().body().writeTo(buffer);
-//                System.out.println("delayedRequest.toString() :" + buffer.readUtf8().toString());
-                }
-            }catch (IOException s){
-                Log.d("runDelayedRequests","ex : " + s.getLocalizedMessage());
-            }
-            delayedRequest.run();
-        }
-        delayedRequests.clear();
-    }
-
-
-    private void failDelayedRequests(GoSellError errorDetails) {
-        for (DelayedRequest delayedRequest : delayedRequests) {
-            delayedRequest.fail(errorDetails);
-        }
-        delayedRequests.clear();
     }
 
     /**
@@ -114,9 +66,11 @@ public class RequestManager {
      *
      * @param <T> the type parameter
      */
-    public static class DelayedRequest<T extends BaseResponse> {
+    public static class TapRequest<T extends BaseResponse> {
         private Call<T> request;
         private APIRequestCallback<T> requestCallback;
+
+
 
         /**
          * Instantiates a new Delayed request.
@@ -124,9 +78,10 @@ public class RequestManager {
          * @param request         the request
          * @param requestCallback the request callback
          */
-       public   DelayedRequest(Call<T> request, APIRequestCallback<T> requestCallback) {
+       public   TapRequest(Call<T> request, APIRequestCallback<T> requestCallback) {
             this.request = request;
             this.requestCallback = requestCallback;
+
         }
 
         private String bodyToString(final RequestBody request){

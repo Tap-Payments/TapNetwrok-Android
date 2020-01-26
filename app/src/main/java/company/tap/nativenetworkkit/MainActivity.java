@@ -5,20 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 
 import company.tap.tapnetworkkit_android.connection.AppInfo;
-import company.tap.tapnetworkkit_android.callbacks.APIRequestCallback;
-import company.tap.tapnetworkkit_android.exceptionEngine.GoSellError;
-import okhttp3.ResponseBody;
+import company.tap.tapnetworkkit_android.interfaces.APIRequestCallback;
+import company.tap.tapnetworkkit_android.exception_handling.GoSellError;
+import company.tap.tapnetworkkit_android.logger.lo;
 import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity implements APIRequestCallback, View.OnClickListener {
     Button buttonPay;
+    Button buttonDel;
 
 
     @Override
@@ -26,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         buttonPay = findViewById(R.id.button_Pay);
+        buttonDel = findViewById(R.id.button_Delete);
 
         /**
          * Setting token to API Info
@@ -35,8 +35,13 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         /**
          * Calling init API
          **/
-        GoSellAPInterface.getInstance().init(this);
+        NetworkClient.getInstance().init(this,getBaseContext());
         buttonPay.setOnClickListener(this);
+        buttonDel.setOnClickListener(this);
+        /**
+         * Dummy values sent to check PUT request
+         **/
+        NetworkClient.getInstance().updateCharge("test2w123",this,getBaseContext());
 
 
     }
@@ -44,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
 
     @Override
     public void onSuccess(int responseCode, Response response) {
-        System.out.println("responseCode = [" + responseCode + "], response = [" + response.body()+ "]");
+        lo.g(response.body().toString());
 
     }
 
@@ -72,7 +77,13 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
             jsonObject.addProperty("taxes", "");
             jsonObject.addProperty("total_amount", "1");
             jsonObject.addProperty("transaction_mode", "PURCHASE");
-            GoSellAPInterface.getInstance().getPaymentOptions(jsonObject, this);
+            NetworkClient.getInstance().getPaymentOptions(jsonObject, this,getBaseContext());
+        }
+        if(v.getId()==R.id.button_Delete){
+            /**
+             * Sending dummy values to check delete request*/
+            NetworkClient.getInstance().deleteCard("cus_10000","83921741382", this,getBaseContext());
+
         }
     }
 }

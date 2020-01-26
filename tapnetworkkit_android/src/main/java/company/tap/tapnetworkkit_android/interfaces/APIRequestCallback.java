@@ -1,12 +1,8 @@
-package company.tap.tapnetworkkit_android.callbacks;
+package company.tap.tapnetworkkit_android.interfaces;
 
 import androidx.annotation.RestrictTo;
 
-import com.google.gson.JsonObject;
-
-import company.tap.tapnetworkkit_android.exceptionEngine.GoSellError;
-import company.tap.tapnetworkkit_android.response.BaseResponse;
-import okhttp3.ResponseBody;
+import company.tap.tapnetworkkit_android.exception_handling.GoSellError;
 import retrofit2.Response;
 
 
