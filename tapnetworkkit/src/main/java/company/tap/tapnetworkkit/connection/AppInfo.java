@@ -1,4 +1,4 @@
-package company.tap.tapnetworkkit_android.connection;
+package company.tap.tapnetworkkit.connection;
 
 import android.content.Context;
 import android.os.Build;
@@ -8,8 +8,8 @@ import android.telephony.TelephonyManager;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import company.tap.tapnetworkkit.logger.lo;
 import company.tap.tapnetworkkit_android.BuildConfig;
-import company.tap.tapnetworkkit_android.logger.lo;
 
 /**
  * The type App info.

@@ -1,7 +1,7 @@
-package company.tap.tapnetworkkit_android.interfaces;
+package company.tap.tapnetworkkit.interfaces;
 
 
-import company.tap.tapnetworkkit_android.exception_handling.GoSellError;
+import company.tap.tapnetworkkit.exception_handling.GoSellError;
 import retrofit2.Response;
 
 

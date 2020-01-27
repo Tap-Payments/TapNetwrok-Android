@@ -1,4 +1,4 @@
-package company.tap.tapnetworkkit_android.connection;
+package company.tap.tapnetworkkit.connection;
 
 import androidx.annotation.Nullable;
 
@@ -8,8 +8,8 @@ import com.google.gson.GsonBuilder;
 import java.util.concurrent.TimeUnit;
 
 import company.tap.tapnetworkkit_android.BuildConfig;
-import company.tap.tapnetworkkit_android.exception_handling.NoAuthTokenProvidedException;
-import company.tap.tapnetworkkit_android.interfaces.APIRequestInterface;
+import company.tap.tapnetworkkit.exception_handling.NoAuthTokenProvidedException;
+import company.tap.tapnetworkkit.interfaces.APIRequestInterface;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;

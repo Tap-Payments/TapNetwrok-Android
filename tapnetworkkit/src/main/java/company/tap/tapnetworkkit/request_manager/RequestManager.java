@@ -1,4 +1,4 @@
-package company.tap.tapnetworkkit_android.request_manager;
+package company.tap.tapnetworkkit.request_manager;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -7,12 +7,12 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import company.tap.tapnetworkkit.callbacks.BaseCallback;
+import company.tap.tapnetworkkit.interfaces.APIRequestCallback;
+import company.tap.tapnetworkkit.utils.NetworkUtils;
 import company.tap.tapnetworkkit_android.R;
-import company.tap.tapnetworkkit_android.interfaces.APIRequestCallback;
-import company.tap.tapnetworkkit_android.callbacks.BaseCallback;
-import company.tap.tapnetworkkit_android.interfaces.APIRequestInterface;
-import company.tap.tapnetworkkit_android.interfaces.BaseResponse;
-import company.tap.tapnetworkkit_android.utils.NetworkUtils;
+import company.tap.tapnetworkkit.interfaces.APIRequestInterface;
+import company.tap.tapnetworkkit.interfaces.BaseResponse;
 import okhttp3.RequestBody;
 import okio.Buffer;
 import retrofit2.Call;

@@ -1,4 +1,4 @@
-package company.tap.tapnetworkkit_android.interfaces;
+package company.tap.tapnetworkkit.interfaces;
 
 import androidx.annotation.RestrictTo;
 

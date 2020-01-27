@@ -1,4 +1,4 @@
-package company.tap.tapnetworkkit_android.logger;
+package company.tap.tapnetworkkit.logger;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;

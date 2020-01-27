@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/NativeNetworkKit.iml" filepath="$PROJECT_DIR$/NativeNetworkKit.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tapnetworkkit_android/tapnetworkkit_android.iml" filepath="$PROJECT_DIR$/tapnetworkkit_android/tapnetworkkit_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tapnetworkkit/tapnetworkkit.iml" filepath="$PROJECT_DIR$/tapnetworkkit/tapnetworkkit.iml" />
     </modules>
   </component>
 </project>

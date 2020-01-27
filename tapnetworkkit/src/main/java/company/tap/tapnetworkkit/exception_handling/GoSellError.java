@@ -1,4 +1,4 @@
-package company.tap.tapnetworkkit_android.exception_handling;
+package company.tap.tapnetworkkit.exception_handling;
 
 import org.json.JSONArray;
 import org.json.JSONException;

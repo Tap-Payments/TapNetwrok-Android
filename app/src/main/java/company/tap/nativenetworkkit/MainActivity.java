@@ -8,10 +8,10 @@ import android.widget.Button;
 
 import com.google.gson.JsonObject;
 
-import company.tap.tapnetworkkit_android.connection.AppInfo;
-import company.tap.tapnetworkkit_android.interfaces.APIRequestCallback;
-import company.tap.tapnetworkkit_android.exception_handling.GoSellError;
-import company.tap.tapnetworkkit_android.logger.lo;
+import company.tap.tapnetworkkit.connection.AppInfo;
+import company.tap.tapnetworkkit.interfaces.APIRequestCallback;
+import company.tap.tapnetworkkit.exception_handling.GoSellError;
+import company.tap.tapnetworkkit.logger.lo;
 import retrofit2.Response;
 
 
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         /**
          * Dummy values sent to check PUT request
          **/
-        NetworkClient.getInstance().updateCharge("test2w123",this,getBaseContext());
+//        NetworkClient.getInstance().updateCharge("test2w123",this,getBaseContext());
 
 
     }

@@ -5,10 +5,10 @@ import android.content.Context;
 
 import com.google.gson.JsonObject;
 
-import company.tap.tapnetworkkit_android.connection.RetrofitHelper;
-import company.tap.tapnetworkkit_android.interfaces.APIRequestCallback;
-import company.tap.tapnetworkkit_android.interfaces.APIRequestInterface;
-import company.tap.tapnetworkkit_android.request_manager.RequestManager;
+import company.tap.tapnetworkkit.connection.RetrofitHelper;
+import company.tap.tapnetworkkit.interfaces.APIRequestCallback;
+import company.tap.tapnetworkkit.interfaces.APIRequestInterface;
+import company.tap.tapnetworkkit.request_manager.RequestManager;
 
 public class NetworkClient {
     /**

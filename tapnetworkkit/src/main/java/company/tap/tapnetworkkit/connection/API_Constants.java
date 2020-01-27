@@ -1,4 +1,4 @@
-package company.tap.tapnetworkkit_android.connection;
+package company.tap.tapnetworkkit.connection;
 
 /**
  * The type Api constants.

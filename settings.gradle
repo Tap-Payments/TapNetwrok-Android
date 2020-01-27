@@ -1,2 +1,2 @@
-include ':app', ':tapnetworkkit_android'
+include ':app', ':tapnetworkkit'
 rootProject.name='NativeNetworkKit'

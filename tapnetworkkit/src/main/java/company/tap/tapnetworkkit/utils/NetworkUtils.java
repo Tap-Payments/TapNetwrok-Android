@@ -1,4 +1,4 @@
-package company.tap.tapnetworkkit_android.utils;
+package company.tap.tapnetworkkit.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
