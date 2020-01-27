@@ -38,8 +38,10 @@ public class NetworkController {
             case POST:
                 requestManager.request( new TapRequest(apiRequestInterface.postRequest(apiName,requestBody), callback),context);
             case PUT:
+                requestManager.request( new TapRequest(apiRequestInterface.putRequest(apiName), callback),context);
                 break;
             case DELETE:
+                requestManager.request( new TapRequest(apiRequestInterface.delete(apiName), callback),context);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + method);

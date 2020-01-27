@@ -39,10 +39,6 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
 
         buttonPay.setOnClickListener(this);
         buttonDel.setOnClickListener(this);
-        /**
-         * Dummy values sent to check PUT request
-         **/
-//        TapRepository.getInstance().updateCharge("test2w123",this,getBaseContext());
 
 
     }
@@ -83,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         if(v.getId()==R.id.button_Delete){
             /**
              * Sending dummy values to check delete request**/
-//            TapRepository.getInstance().deleteCard("cus_10000","83921741382", this,getBaseContext());
+            TapRepository.getInstance().deleteCard("cus_10000","83921741382", this,getBaseContext());
 
         }
     }

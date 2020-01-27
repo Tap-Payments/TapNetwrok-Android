@@ -32,6 +32,11 @@ public class TapRepository {
         networkController.setBaseUrl(API_Methods.BASE_URL);
     }
 
+    public void deleteCard(String customerId, String cardId, APIRequestCallback callback, Context context) {
+        networkController.processRequest(TapMethodType.DELETE, API_Methods.DELETE_CARD+"/"+customerId+"/"+cardId, null, callback, context);
+
+    }
+
 
     private static class SingletonCreationAdmin {
         private static final TapRepository INSTANCE = new TapRepository();
