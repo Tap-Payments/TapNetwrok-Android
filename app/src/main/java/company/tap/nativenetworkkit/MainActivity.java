@@ -28,20 +28,21 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         buttonDel = findViewById(R.id.button_Delete);
 
         /**
-         * Setting token to API Info
+         * Store authToken and bundle ID.
          **/
         AppInfo.setAuthToken(this,"sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");
 
         /**
          * Calling init API
          **/
-        NetworkClient.getInstance().init(this,getBaseContext());
+        TapRepository.getInstance().init(this,getBaseContext());
+
         buttonPay.setOnClickListener(this);
         buttonDel.setOnClickListener(this);
         /**
          * Dummy values sent to check PUT request
          **/
-//        NetworkClient.getInstance().updateCharge("test2w123",this,getBaseContext());
+//        TapRepository.getInstance().updateCharge("test2w123",this,getBaseContext());
 
 
     }
@@ -77,12 +78,12 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
             jsonObject.addProperty("taxes", "");
             jsonObject.addProperty("total_amount", "1");
             jsonObject.addProperty("transaction_mode", "PURCHASE");
-            NetworkClient.getInstance().getPaymentOptions(jsonObject, this,getBaseContext());
+            TapRepository.getInstance().getPaymentOptions(jsonObject, this,getBaseContext());
         }
         if(v.getId()==R.id.button_Delete){
             /**
              * Sending dummy values to check delete request**/
-            NetworkClient.getInstance().deleteCard("cus_10000","83921741382", this,getBaseContext());
+//            TapRepository.getInstance().deleteCard("cus_10000","83921741382", this,getBaseContext());
 
         }
     }

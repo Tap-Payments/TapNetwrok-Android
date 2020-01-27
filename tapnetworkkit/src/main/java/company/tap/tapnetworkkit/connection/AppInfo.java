@@ -31,11 +31,10 @@ public class AppInfo {
      */
     public static void setAuthToken(Context context, String authToken, String appId) {
         AppInfo.authToken = authToken;
-        //System.out.println("appId : "+appId);
         initApplicationInfo(appId);
 
-        manager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        //deviceName =  Settings.System.getString(context.getContentResolver(), "device_name");
+        if(manager!=null) manager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+
    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             deviceName =  Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
         } else{
