@@ -19,7 +19,7 @@ import retrofit2.http.Url;
 public interface APIRequestInterface {
 
     @POST()
-    Call<JsonObject> postRequest(@Url String apiName ,@Body JsonObject jsonObject);
+    Call<JsonObject> postRequest(@Url String apiName ,@Body TapRequestBodyBase requestBody);
 
     @GET()
      Call<JsonObject> getRequest(@Url String apiName);
