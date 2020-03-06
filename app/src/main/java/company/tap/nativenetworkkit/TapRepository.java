@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import company.tap.tapnetworkkit.controller.NetworkController;
 import company.tap.tapnetworkkit.enums.TapMethodType;
 import company.tap.tapnetworkkit.interfaces.APIRequestCallback;
+import company.tap.tapnetworkkit.interfaces.TapRequestBodyBase;
 
 public class TapRepository {
    private NetworkController networkController;
@@ -21,8 +22,8 @@ public class TapRepository {
 
     }
 
-    public void getPaymentOptions(JsonObject jsonObject, APIRequestCallback callback, Context context) {
-        networkController.processRequest(TapMethodType.POST, API_Methods.PAYMENT_TYPES, jsonObject, callback, context);
+    public void getPaymentOptions(TapRequestBodyBase requestBody, APIRequestCallback callback, Context context) {
+        networkController.processRequest(TapMethodType.POST, API_Methods.PAYMENT_TYPES, requestBody, callback, context);
     }
 
 

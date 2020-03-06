@@ -59,26 +59,15 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
     @Override
     public void onClick(View v) {
         if(v.getId()==R.id.button_Pay) {
-            /**
-             * Passing post request body as JsonObject to obtain
-             * response for Payment options
-             **/
-            JsonObject jsonObject = null;
-            jsonObject = new JsonObject();
-            jsonObject.addProperty("currency", "kwd");
-            jsonObject.addProperty("customer", "");
-
-            jsonObject.addProperty("payment_type", "KNET");
-
-            jsonObject.addProperty("shipping", "");
-            jsonObject.addProperty("taxes", "");
-            jsonObject.addProperty("total_amount", "1");
-            jsonObject.addProperty("transaction_mode", "PURCHASE");
-            TapRepository.getInstance().getPaymentOptions(jsonObject, this,getBaseContext());
+            /*
+             Passing post request body to obtain
+             response for Payment options
+             */
+            PaymentOptionsRequest requestBody = new PaymentOptionsRequest(TransactionMode.PURCHASE, "kwd", 1.0, "KNET");
+            TapRepository.getInstance().getPaymentOptions(requestBody, this,getBaseContext());
         }
         if(v.getId()==R.id.button_Delete){
-            /**
-             * Sending dummy values to check delete request**/
+            //Sending dummy values to check delete request
             TapRepository.getInstance().deleteCard("cus_10000","83921741382", this,getBaseContext());
 
         }

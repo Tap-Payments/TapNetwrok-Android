@@ -9,6 +9,7 @@ import company.tap.tapnetworkkit.connection.RetrofitHelper;
 import company.tap.tapnetworkkit.enums.TapMethodType;
 import company.tap.tapnetworkkit.interfaces.APIRequestCallback;
 import company.tap.tapnetworkkit.interfaces.APIRequestInterface;
+import company.tap.tapnetworkkit.interfaces.TapRequestBodyBase;
 import company.tap.tapnetworkkit.request_manager.RequestManager;
 
 import static company.tap.tapnetworkkit.request_manager.RequestManager.*;
@@ -30,7 +31,7 @@ public class NetworkController {
         apiRequestInterface = RetrofitHelper.getApiHelper(baseURL);
     }
 
-    public void processRequest(TapMethodType method, String apiName,JsonObject requestBody ,APIRequestCallback callback, Context context){
+    public void processRequest(TapMethodType method, String apiName, TapRequestBodyBase requestBody , APIRequestCallback callback, Context context){
         switch(method){
             case GET:
                 requestManager.request( new TapRequest(apiRequestInterface.getRequest(apiName), callback),context);
