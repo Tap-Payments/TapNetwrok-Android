@@ -1,6 +1,6 @@
 package company.tap.nativenetworkkit;
 
-public final class  API_Methods {
+public final class APIMethods {
     /**
      * The Base url.
      */

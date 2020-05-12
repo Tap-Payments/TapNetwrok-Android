@@ -1,53 +1,41 @@
 package company.tap.tapnetworkkit.controller;
 
-
 import android.content.Context;
-
-import com.google.gson.JsonObject;
 
 import company.tap.tapnetworkkit.connection.RetrofitHelper;
 import company.tap.tapnetworkkit.enums.TapMethodType;
 import company.tap.tapnetworkkit.interfaces.APIRequestCallback;
 import company.tap.tapnetworkkit.interfaces.APIRequestInterface;
 import company.tap.tapnetworkkit.interfaces.TapRequestBodyBase;
-import company.tap.tapnetworkkit.request_manager.RequestManager;
-
-import static company.tap.tapnetworkkit.request_manager.RequestManager.*;
+import company.tap.tapnetworkkit.request.TapRequest;
 
 public class NetworkController {
 
-
-    private  RequestManager requestManager;
-    private   APIRequestInterface apiRequestInterface;
-
-     private NetworkController() {
-        requestManager = new RequestManager(apiRequestInterface);
-    }
+    private APIRequestInterface apiRequestInterface;
 
     /**
-     *Required to set baseURL on retrofit
+     * Required to set baseURL on retrofit
      */
-    public  void setBaseUrl(String baseURL){
-        apiRequestInterface = RetrofitHelper.getApiHelper(baseURL);
+    public void setBaseUrl(String baseURL, Context context) {
+        apiRequestInterface = RetrofitHelper.getApiHelper(baseURL, context);
     }
 
-    public void processRequest(TapMethodType method, String apiName, TapRequestBodyBase requestBody , APIRequestCallback callback, Context context){
-        switch(method){
+    public void processRequest(TapMethodType method, String apiName, TapRequestBodyBase requestBody, APIRequestCallback callback, int requestCode) {
+        switch (method) {
             case GET:
-                requestManager.request( new TapRequest(apiRequestInterface.getRequest(apiName), callback),context);
+                new TapRequest(apiRequestInterface.getRequest(apiName), callback, requestCode).run();
                 break;
             case POST:
-                requestManager.request( new TapRequest(apiRequestInterface.postRequest(apiName,requestBody), callback),context);
+                new TapRequest(apiRequestInterface.postRequest(apiName, requestBody), callback, requestCode).run();
             case PUT:
-                requestManager.request( new TapRequest(apiRequestInterface.putRequest(apiName), callback),context);
+                new TapRequest(apiRequestInterface.putRequest(apiName), callback, requestCode).run();
                 break;
             case DELETE:
-                requestManager.request( new TapRequest(apiRequestInterface.delete(apiName), callback),context);
+                new TapRequest(apiRequestInterface.delete(apiName), callback, requestCode).run();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + method);
         }
-
     }
 
     private static class SingletonCreationAdmin {

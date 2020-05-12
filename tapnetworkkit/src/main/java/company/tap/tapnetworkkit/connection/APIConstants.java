@@ -3,7 +3,7 @@ package company.tap.tapnetworkkit.connection;
 /**
  * The type Api constants.
  */
-public final class API_Constants {
+public final class APIConstants {
 
     /**
      * The Auth token key.

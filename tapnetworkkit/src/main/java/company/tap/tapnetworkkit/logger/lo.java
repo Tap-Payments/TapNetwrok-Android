@@ -15,7 +15,7 @@ public class lo {
      *
      * @param c the c
      */
-    public static void init(Context c){
+    public static void init(Context c) {
         isDebuggable = (0 != (c.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE));
     }
 
@@ -24,8 +24,8 @@ public class lo {
      *
      * @param message the message
      */
-    public static void g(String message){
-        if(isDebuggable){
+    public static void g(String message) {
+        if (isDebuggable) {
             String fullClassName = Thread.currentThread().getStackTrace()[3].getClassName();
             String className = fullClassName.substring(fullClassName.lastIndexOf(".") + 1);
             String methodName = Thread.currentThread().getStackTrace()[3].getMethodName();
@@ -39,7 +39,7 @@ public class lo {
      *
      * @param operation the operation
      */
-    public static void logRequestResponseTime(String operation){
-        Log.d(operation +": ", System.nanoTime()+"");
+    public static void logRequestResponseTime(String operation) {
+        Log.d(operation + ": ", System.nanoTime() + "");
     }
 }

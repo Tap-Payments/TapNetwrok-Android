@@ -1,4 +1,4 @@
-package company.tap.tapnetworkkit.exception_handling;
+package company.tap.tapnetworkkit.exception;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,41 +44,39 @@ public class GoSellError implements Serializable {
      *
      * @return the string
      */
-    public String getErrorMessage(){
-    String res = "";
-    if (errorBody != null && !"".equals(errorBody.trim())) {
-      try {
-        Object json = new JSONTokener(errorBody).nextValue();
-        JSONObject jsonObject = new JSONObject(errorBody);
+    public String getErrorMessage() {
+        String res = "";
+        if (errorBody != null && !"".equals(errorBody.trim())) {
+            try {
+                Object json = new JSONTokener(errorBody).nextValue();
+                JSONObject jsonObject = new JSONObject(errorBody);
 
-        if(json instanceof JSONArray){
-          JSONArray jsonArray = jsonObject.getJSONArray("errors");
-          if(jsonArray!=null && jsonArray.length()>0)
-          {
-            JSONObject jsonObj =  jsonArray.getJSONObject(0);
-            if(jsonObj!=null) res = (String)jsonObj.get("description");
-          }
-        }else if(json instanceof JSONObject){
-            JSONArray jsonArray = jsonObject.getJSONArray("errors");
-            if(jsonArray!=null && jsonArray.length()>0)
-            {
-                JSONObject jsonObj =  jsonArray.getJSONObject(0);
-                if(jsonObj!=null) res = (String)jsonObj.get("description");
-            }
+                if (json instanceof JSONArray) {
+                    JSONArray jsonArray = jsonObject.getJSONArray("errors");
+                    if (jsonArray != null && jsonArray.length() > 0) {
+                        JSONObject jsonObj = jsonArray.getJSONObject(0);
+                        if (jsonObj != null) res = (String) jsonObj.get("description");
+                    }
+                } else if (json instanceof JSONObject) {
+                    JSONArray jsonArray = jsonObject.getJSONArray("errors");
+                    if (jsonArray != null && jsonArray.length() > 0) {
+                        JSONObject jsonObj = jsonArray.getJSONObject(0);
+                        if (jsonObj != null) res = (String) jsonObj.get("description");
+                    }
 //          if(jsonObject1!=null) res = (String)jsonObject1.get("description");
+                }
+            } catch (JSONException errorMessage2) {
+                try {
+                    JSONObject jsonObject = new JSONObject(errorBody);
+                    res = (String) jsonObject.get("message");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                errorMessage2.printStackTrace();
+            }
         }
-      }catch(JSONException errorMessage2){
-          try{
-              JSONObject jsonObject = new JSONObject(errorBody);
-              res= (String)jsonObject.get("message");
-          }catch (Exception ex){
-              ex.printStackTrace();
-          }
-        errorMessage2.printStackTrace();
-      }
+        return res;
     }
-    return res;
-  }
 
     /**
      * Gets error code.

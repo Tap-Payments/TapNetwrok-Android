@@ -8,13 +8,14 @@ import android.telephony.TelephonyManager;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import company.tap.tapnetworkkit.controller.NetworkController;
 import company.tap.tapnetworkkit.logger.lo;
 import company.tap.tapnetworkkit_android.BuildConfig;
 
 /**
  * The type App info.
  */
-public class AppInfo {
+public class NetworkApp {
     //auth information for headers
     private static String authToken;
     private static LinkedHashMap<Object, Object> applicationInfo;
@@ -22,26 +23,26 @@ public class AppInfo {
     private static TelephonyManager manager;
     private static String deviceName;
 
-
     /**
      * Sets auth token.
      *
      * @param context   the context
      * @param authToken the auth token
      */
-    public static void setAuthToken(Context context, String authToken, String appId) {
-        AppInfo.authToken = authToken;
+    public static void initNetwork(Context context, String authToken, String appId, String baseUrl) {
+        NetworkApp.authToken = authToken;
         initApplicationInfo(appId);
 
-        if(manager!=null) manager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (manager != null)
+            manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
-   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            deviceName =  Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
-        } else{
-            deviceName =  Settings.System.getString(context.getContentResolver(), "device_name");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
+        } else {
+            deviceName = Settings.System.getString(context.getContentResolver(), "device_name");
         }
 
-
+        NetworkController.getInstance().setBaseUrl(baseUrl, context);
         lo.init(context);
     }
 
@@ -60,8 +61,8 @@ public class AppInfo {
      * @param locale the locale
      */
     public static void setLocale(String locale) {
-        AppInfo.localeString = locale.length() < 2 ? locale : locale.substring(0, 2);
-        AppInfo.applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
+        NetworkApp.localeString = locale.length() < 2 ? locale : locale.substring(0, 2);
+        NetworkApp.applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
     }
 
     private static void initApplicationInfo(String applicationId) {
@@ -73,10 +74,10 @@ public class AppInfo {
         applicationInfo.put("requirer_os", "Android");
         applicationInfo.put("requirer_os_version", Build.VERSION.RELEASE);
         applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
-        applicationInfo.put("requirer_device_name",deviceName);
+        applicationInfo.put("requirer_device_name", deviceName);
         applicationInfo.put("requirer_device_type", Build.BRAND);
         applicationInfo.put("requirer_device_model", Build.MODEL);
-        if(manager!=null) {
+        if (manager != null) {
             applicationInfo.put("requirer_sim_network_name", manager.getSimOperatorName());
             applicationInfo.put("requirer_sim_country_iso", manager.getSimCountryIso());
         }

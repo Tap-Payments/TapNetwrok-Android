@@ -3,38 +3,26 @@ package company.tap.nativenetworkkit;
 
 import android.content.Context;
 
-import com.google.gson.JsonObject;
-
 import company.tap.tapnetworkkit.controller.NetworkController;
 import company.tap.tapnetworkkit.enums.TapMethodType;
 import company.tap.tapnetworkkit.interfaces.APIRequestCallback;
 import company.tap.tapnetworkkit.interfaces.TapRequestBodyBase;
 
-public class TapRepository {
-   private NetworkController networkController;
+class TapRepository {
 
-    private TapRepository() {
-        initializeNetworkKit();
-    }
 
-    public void init(APIRequestCallback callback, Context context) {
-        networkController.processRequest(TapMethodType.GET, API_Methods.INIT, null, callback, context);
+    void init(APIRequestCallback callback, Context context) {
+        NetworkController.getInstance().processRequest(TapMethodType.GET, APIMethods.INIT, null, callback, 1);
 
     }
 
-    public void getPaymentOptions(TapRequestBodyBase requestBody, APIRequestCallback callback, Context context) {
-        networkController.processRequest(TapMethodType.POST, API_Methods.PAYMENT_TYPES, requestBody, callback, context);
+    void getPaymentOptions(TapRequestBodyBase requestBody, APIRequestCallback callback) {
+        NetworkController.getInstance().processRequest(TapMethodType.POST, APIMethods.PAYMENT_TYPES, requestBody, callback, 2);
     }
 
 
-
-    private void initializeNetworkKit() {
-        networkController = NetworkController.getInstance();
-        networkController.setBaseUrl(API_Methods.BASE_URL);
-    }
-
-    public void deleteCard(String customerId, String cardId, APIRequestCallback callback, Context context) {
-        networkController.processRequest(TapMethodType.DELETE, API_Methods.DELETE_CARD+"/"+customerId+"/"+cardId, null, callback, context);
+    void deleteCard(String customerId, String cardId, APIRequestCallback callback) {
+        NetworkController.getInstance().processRequest(TapMethodType.DELETE, APIMethods.DELETE_CARD+"/"+customerId+"/"+cardId, null, callback, 3);
 
     }
 
@@ -48,7 +36,7 @@ public class TapRepository {
      *
      * @return the instance
      */
-    public static TapRepository getInstance() {
+    static TapRepository getInstance() {
         return TapRepository.SingletonCreationAdmin.INSTANCE;
     }
 }

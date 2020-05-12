@@ -1,15 +1,15 @@
 package company.tap.tapnetworkkit.connection;
 
-import androidx.annotation.Nullable;
+import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
-import company.tap.tapnetworkkit_android.BuildConfig;
-import company.tap.tapnetworkkit.exception_handling.NoAuthTokenProvidedException;
+import company.tap.tapnetworkkit.exception.NoAuthTokenProvidedException;
 import company.tap.tapnetworkkit.interfaces.APIRequestInterface;
+import company.tap.tapnetworkkit_android.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -28,17 +28,13 @@ public final class RetrofitHelper {
      *
      * @return the api helper
      */
-    @Nullable
-    public static APIRequestInterface getApiHelper(String baseUrl) {
-        /**
-         * Lazy loading
-         */
+    public static APIRequestInterface getApiHelper(String baseUrl, Context context) {
         if (retrofit == null) {
-            if (AppInfo.getAuthToken() == null) {
+            if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();
             }
 
-            OkHttpClient okHttpClient = getOkHttpClient();
+            OkHttpClient okHttpClient = getOkHttpClient(context);
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .addConverterFactory(buildGsonConverter())
@@ -60,19 +56,19 @@ public final class RetrofitHelper {
         return GsonConverterFactory.create(myGson);
     }
 
-    private static OkHttpClient getOkHttpClient() {
+    private static OkHttpClient getOkHttpClient(Context context) {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
         httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
         httpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
-        // add application interceptor to httpClientBuilder
+        httpClientBuilder.addInterceptor(new NetworkConnectionInterceptor(context));
         httpClientBuilder.addInterceptor(chain -> {
             Request request = chain.request()
                     .newBuilder()
-                    .addHeader(API_Constants.AUTH_TOKEN_KEY, API_Constants.AUTH_TOKEN_PREFIX + AppInfo.getAuthToken())
-                    .addHeader(API_Constants.APPLICATION, AppInfo.getApplicationInfo())
-                    .addHeader(API_Constants.ACCEPT_KEY,API_Constants.ACCEPT_VALUE)
-                    .addHeader(API_Constants.CONTENT_TYPE_KEY, API_Constants.CONTENT_TYPE_VALUE).build();
+                    .addHeader(APIConstants.AUTH_TOKEN_KEY, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getAuthToken())
+                    .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
+                    .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
+                    .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE).build();
             return chain.proceed(request);
         });
         httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BODY));

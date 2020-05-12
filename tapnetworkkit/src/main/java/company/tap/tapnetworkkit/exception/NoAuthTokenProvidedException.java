@@ -1,4 +1,4 @@
-package company.tap.tapnetworkkit.exception_handling;
+package company.tap.tapnetworkkit.exception;
 
 /**
  * The type No auth token provided exception.
