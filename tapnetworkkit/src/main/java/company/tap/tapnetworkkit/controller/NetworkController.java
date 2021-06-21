@@ -27,6 +27,7 @@ public class NetworkController {
                 break;
             case POST:
                 new TapRequest(apiRequestInterface.postRequest(apiName, requestBody), callback, requestCode).run();
+                break;
             case PUT:
                 new TapRequest(apiRequestInterface.putRequest(apiName), callback, requestCode).run();
                 break;
