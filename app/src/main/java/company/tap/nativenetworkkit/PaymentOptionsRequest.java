@@ -1,16 +1,13 @@
 package company.tap.nativenetworkkit;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.math.BigDecimal;
-
 import company.tap.tapnetworkkit.interfaces.TapRequestBodyBase;
 
-class PaymentOptionsRequest implements TapRequestBodyBase {
+public class PaymentOptionsRequest implements TapRequestBodyBase {
 
     @SerializedName("transaction_mode")
     @Expose
@@ -29,7 +26,7 @@ class PaymentOptionsRequest implements TapRequestBodyBase {
     @Expose
     @NonNull private String payment_type;
 
-    PaymentOptionsRequest(@NonNull TransactionMode transactionMode, @NonNull String currency, @NonNull Double totalAmount, @NonNull String payment_type) {
+    public PaymentOptionsRequest(@NonNull TransactionMode transactionMode, @NonNull String currency, @NonNull Double totalAmount, @NonNull String payment_type) {
         this.transactionMode = transactionMode;
         this.currency = currency;
         this.totalAmount = totalAmount;

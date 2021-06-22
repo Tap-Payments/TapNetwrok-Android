@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import company.tap.tapnetworkkit.connection.NetworkApp;
@@ -59,7 +60,9 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
              response for Payment options
              */
             PaymentOptionsRequest requestBody = new PaymentOptionsRequest(TransactionMode.PURCHASE, "kwd", 1.0, "KNET");
-            TapRepository.getInstance().getPaymentOptions(requestBody, this);
+            String jsonString = new Gson().toJson(requestBody);
+            System.out.println("jsonString<<<>>>>"+jsonString);
+            TapRepository.getInstance().getPaymentOptions(jsonString, this);
         }
         if (v.getId() == R.id.button_Delete) {
             //Sending dummy values to check delete request

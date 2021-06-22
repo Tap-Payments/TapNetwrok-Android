@@ -1,12 +1,21 @@
 package company.tap.tapnetworkkit.controller;
 
 import android.content.Context;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 import company.tap.tapnetworkkit.connection.RetrofitHelper;
 import company.tap.tapnetworkkit.enums.TapMethodType;
 import company.tap.tapnetworkkit.interfaces.APIRequestCallback;
 import company.tap.tapnetworkkit.interfaces.APIRequestInterface;
-import company.tap.tapnetworkkit.interfaces.TapRequestBodyBase;
 import company.tap.tapnetworkkit.request.TapRequest;
 
 public class NetworkController {
@@ -20,13 +29,17 @@ public class NetworkController {
         apiRequestInterface = RetrofitHelper.getApiHelper(baseURL, context);
     }
 
-    public void processRequest(TapMethodType method, String apiName, TapRequestBodyBase requestBody, APIRequestCallback callback, int requestCode) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void processRequest(TapMethodType method, String apiName, String requestBody, APIRequestCallback callback, int requestCode) {
         switch (method) {
             case GET:
                 new TapRequest(apiRequestInterface.getRequest(apiName), callback, requestCode).run();
                 break;
             case POST:
-                new TapRequest(apiRequestInterface.postRequest(apiName, requestBody), callback, requestCode).run();
+                Map<String, Object> requestMap = new Gson().fromJson(
+                        requestBody, new TypeToken<HashMap<String, Object>>() {}.getType()
+                );
+                new TapRequest(apiRequestInterface.postRequest(apiName,requestMap), callback, requestCode).run();
                 break;
             case PUT:
                 new TapRequest(apiRequestInterface.putRequest(apiName), callback, requestCode).run();

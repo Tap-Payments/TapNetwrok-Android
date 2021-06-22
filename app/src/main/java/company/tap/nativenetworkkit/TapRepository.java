@@ -6,7 +6,6 @@ import android.content.Context;
 import company.tap.tapnetworkkit.controller.NetworkController;
 import company.tap.tapnetworkkit.enums.TapMethodType;
 import company.tap.tapnetworkkit.interfaces.APIRequestCallback;
-import company.tap.tapnetworkkit.interfaces.TapRequestBodyBase;
 
 class TapRepository {
 
@@ -16,8 +15,8 @@ class TapRepository {
 
     }
 
-    void getPaymentOptions(TapRequestBodyBase requestBody, APIRequestCallback callback) {
-        NetworkController.getInstance().processRequest(TapMethodType.POST, APIMethods.PAYMENT_TYPES, requestBody, callback, 2);
+    void getPaymentOptions(String jsonString, APIRequestCallback callback) {
+        NetworkController.getInstance().processRequest(TapMethodType.POST, APIMethods.PAYMENT_TYPES, jsonString, callback, 2);
     }
 
 
