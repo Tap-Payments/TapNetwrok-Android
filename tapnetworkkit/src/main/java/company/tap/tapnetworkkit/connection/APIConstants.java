@@ -33,6 +33,11 @@ public final class APIConstants {
      * The Accept value.
      */
     public static final String ACCEPT_VALUE = "application/json";
+    /**
+     * The Auth token prefix.
+     */
+    public static final String TOKEN_PREFIX = "token ";
+
 
 
 

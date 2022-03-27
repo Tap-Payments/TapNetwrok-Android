@@ -65,8 +65,8 @@ public final class RetrofitHelper {
         httpClientBuilder.addInterceptor(chain -> {
             Request request = chain.request()
                     .newBuilder()
-                    .addHeader(APIConstants.AUTH_TOKEN_KEY, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getAuthToken())
-                    .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
+                    .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
+                    //.addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
                     .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
                     .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE).build();
             return chain.proceed(request);

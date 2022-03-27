@@ -18,6 +18,7 @@ import company.tap.tapnetworkkit_android.BuildConfig;
 public class NetworkApp {
     //auth information for headers
     private static String authToken;
+    private static String headerToken;
     private static LinkedHashMap<Object, Object> applicationInfo;
     private static String localeString = "en";
     private static TelephonyManager manager;
@@ -45,6 +46,25 @@ public class NetworkApp {
         NetworkController.getInstance().setBaseUrl(baseUrl, context);
         lo.init(context);
     }
+    /**
+     * Sets header token.
+     *
+     * @param _headerToken   the headertoken
+     * */
+
+    public static void initNetworkToken(String _headerToken) {
+        NetworkApp.headerToken =_headerToken;
+    }
+
+    /**
+     * Gets header token.
+     *
+     * @return the _header token
+     */
+    static String getHeaderToken() {
+        return headerToken;
+    }
+
 
     /**
      * Gets auth token.
@@ -97,7 +117,7 @@ public class NetworkApp {
      *
      * @return the application info
      */
-    static String getApplicationInfo() {
+    public static String getApplicationInfo() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Map.Entry entry : applicationInfo.entrySet()) {
             stringBuilder.append(entry.getKey());
@@ -138,5 +158,7 @@ public class NetworkApp {
 
             return EN;
         }
+
     }
 }
+ 
