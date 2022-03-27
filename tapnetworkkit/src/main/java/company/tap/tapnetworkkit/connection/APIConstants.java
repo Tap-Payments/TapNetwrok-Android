@@ -36,7 +36,7 @@ public final class APIConstants {
     /**
      * The Auth token prefix.
      */
-    public static final String TOKEN_PREFIX = "token ";
+    public static final String TOKEN_PREFIX = "token";
 
 
 
