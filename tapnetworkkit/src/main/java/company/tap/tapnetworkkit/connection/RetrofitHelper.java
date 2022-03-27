@@ -34,11 +34,8 @@ public final class RetrofitHelper {
             if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();
             }
-            if(NetworkApp.getHeaderToken()==null||NetworkApp.getHeaderToken()==""){
+
                  okHttpClient = getOkHttpClient(context);
-            }else{
-                okHttpClient = getOkHttpClientWithHeader(context);
-            }
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
@@ -88,15 +85,27 @@ public final class RetrofitHelper {
         httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
         httpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
         httpClientBuilder.addInterceptor(new NetworkConnectionInterceptor(context));
-        httpClientBuilder.addInterceptor(chain -> {
-            Request request = chain.request()
-                    .newBuilder()
-                   // .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
-                    //.addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
-                    .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
-                    .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE).build();
-            return chain.proceed(request);
-        });
+        if(NetworkApp.getHeaderToken()!=null){
+            httpClientBuilder.addInterceptor(chain -> {
+                Request request = chain.request()
+                        .newBuilder()
+                        .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
+                        .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
+                        .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
+                        .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE).build();
+                return chain.proceed(request);
+            });
+        }else {
+            httpClientBuilder.addInterceptor(chain -> {
+                Request request = chain.request()
+                        .newBuilder()
+                        .addHeader(APIConstants.AUTH_TOKEN_KEY, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getAuthToken())
+                        .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
+                        .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
+                        .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE).build();
+                return chain.proceed(request);
+            });
+        }
         httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BODY));
 
         return httpClientBuilder.build();
