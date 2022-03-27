@@ -53,8 +53,10 @@ public class NetworkApp {
      * @param _headerToken   the headertoken
      * */
 
-    public static void initNetworkToken(String _headerToken) {
+    public static void initNetworkToken(String _headerToken,Context context, String baseUrl) {
         NetworkApp.headerToken =_headerToken;
+        RetrofitHelper.getApiHelper(baseUrl,context);
+        lo.init(context);
     }
 
     /**
