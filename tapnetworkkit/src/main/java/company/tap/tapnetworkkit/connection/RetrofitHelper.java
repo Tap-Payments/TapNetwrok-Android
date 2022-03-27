@@ -22,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public final class RetrofitHelper {
     private static Retrofit retrofit;
     private static APIRequestInterface helper;
+    static OkHttpClient okHttpClient;
 
     /**
      * Gets api helper.
@@ -33,8 +34,12 @@ public final class RetrofitHelper {
             if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();
             }
+            if(NetworkApp.getHeaderToken()==null||NetworkApp.getHeaderToken()==""){
+                 okHttpClient = getOkHttpClient(context);
+            }else{
+                okHttpClient = getOkHttpClientWithHeader(context);
+            }
 
-            OkHttpClient okHttpClient = getOkHttpClient(context);
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .addConverterFactory(buildGsonConverter())
@@ -48,6 +53,27 @@ public final class RetrofitHelper {
 
         return helper;
     }
+
+    private static OkHttpClient getOkHttpClientWithHeader(Context context) {
+        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+
+        httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
+        httpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
+        httpClientBuilder.addInterceptor(new NetworkConnectionInterceptor(context));
+        httpClientBuilder.addInterceptor(chain -> {
+            Request request = chain.request()
+                    .newBuilder()
+                    .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
+                    //.addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
+                    .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
+                    .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE).build();
+            return chain.proceed(request);
+        });
+        httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BODY));
+
+        return httpClientBuilder.build();
+    }
+
 
     private static GsonConverterFactory buildGsonConverter() {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -65,7 +91,7 @@ public final class RetrofitHelper {
         httpClientBuilder.addInterceptor(chain -> {
             Request request = chain.request()
                     .newBuilder()
-                    .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
+                   // .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
                     //.addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
                     .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
                     .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE).build();
