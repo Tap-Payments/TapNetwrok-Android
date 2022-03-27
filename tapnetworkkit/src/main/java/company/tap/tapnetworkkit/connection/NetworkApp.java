@@ -10,7 +10,8 @@ import java.util.Map;
 
 import company.tap.tapnetworkkit.controller.NetworkController;
 import company.tap.tapnetworkkit.logger.lo;
-import company.tap.tapnetworkkit_android.BuildConfig;
+import company.tap.nativenetworkkit.BuildConfig;
+
 
 /**
  * The type App info.
