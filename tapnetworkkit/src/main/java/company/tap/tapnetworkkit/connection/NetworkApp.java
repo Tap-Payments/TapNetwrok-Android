@@ -10,7 +10,8 @@ import java.util.Map;
 
 import company.tap.tapnetworkkit.controller.NetworkController;
 import company.tap.tapnetworkkit.logger.lo;
-import company.tap.nativenetworkkit.BuildConfig;
+import company.tap.tapnetworkkit_android.BuildConfig;
+//import company.tap.nativenetworkkit.BuildConfig;
 
 
 /**
@@ -93,7 +94,7 @@ public class NetworkApp {
 
         applicationInfo.put("app_id", applicationId);
         applicationInfo.put("requirer", "SDK");
-        applicationInfo.put("requirer_version", BuildConfig.VERSION_NAME);
+        applicationInfo.put("requirer_version","1.0");
         applicationInfo.put("requirer_os", "Android");
         applicationInfo.put("requirer_os_version", Build.VERSION.RELEASE);
         applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);

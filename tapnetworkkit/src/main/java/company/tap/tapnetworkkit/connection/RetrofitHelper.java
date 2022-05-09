@@ -7,9 +7,10 @@ import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
-import company.tap.nativenetworkkit.BuildConfig;
+//import company.tap.nativenetworkkit.BuildConfig;
 import company.tap.tapnetworkkit.exception.NoAuthTokenProvidedException;
 import company.tap.tapnetworkkit.interfaces.APIRequestInterface;
+import company.tap.tapnetworkkit_android.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
