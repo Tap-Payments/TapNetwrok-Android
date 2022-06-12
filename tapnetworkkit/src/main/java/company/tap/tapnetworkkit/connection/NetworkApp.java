@@ -5,6 +5,8 @@ import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
+import androidx.annotation.Nullable;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -32,9 +34,9 @@ public class NetworkApp {
      * @param context   the context
      * @param authToken the auth token
      */
-    public static void initNetwork(Context context, String authToken, String appId, String baseUrl) {
+    public static void initNetwork(Context context, String authToken, String appId, String baseUrl , @Nullable String sdkIdentifier) {
         NetworkApp.authToken = authToken;
-        initApplicationInfo(appId);
+        initApplicationInfo(appId,sdkIdentifier);
 
         if (manager != null)
             manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -89,11 +91,11 @@ public class NetworkApp {
         NetworkApp.applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
     }
 
-    private static void initApplicationInfo(String applicationId) {
+    private static void initApplicationInfo(String applicationId , String sdkIdentifier) {
         applicationInfo = new LinkedHashMap<>();
 
         applicationInfo.put("app_id", applicationId);
-        applicationInfo.put("requirer", "SDK");
+        applicationInfo.put("requirer", sdkIdentifier);
         applicationInfo.put("requirer_version","1.0");
         applicationInfo.put("requirer_os", "Android");
         applicationInfo.put("requirer_os_version", Build.VERSION.RELEASE);
