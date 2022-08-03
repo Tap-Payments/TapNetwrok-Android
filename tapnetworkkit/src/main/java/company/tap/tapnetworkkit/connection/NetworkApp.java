@@ -12,7 +12,6 @@ import java.util.Map;
 
 import company.tap.tapnetworkkit.controller.NetworkController;
 import company.tap.tapnetworkkit.logger.lo;
-import company.tap.tapnetworkkit_android.BuildConfig;
 //import company.tap.nativenetworkkit.BuildConfig;
 
 
@@ -41,11 +40,7 @@ public class NetworkApp {
         if (manager != null)
             manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
-        } else {
-            deviceName = Settings.System.getString(context.getContentResolver(), "device_name");
-        }
+        deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
 
         NetworkController.getInstance().setBaseUrl(baseUrl, context);
         lo.init(context);
@@ -103,6 +98,7 @@ public class NetworkApp {
         applicationInfo.put("requirer_device_name", deviceName);
         applicationInfo.put("requirer_device_type", Build.BRAND);
         applicationInfo.put("requirer_device_model", Build.MODEL);
+        applicationInfo.put("requirer_device_manufacturer", Build.MANUFACTURER);
         if (manager != null) {
             applicationInfo.put("requirer_sim_network_name", manager.getSimOperatorName());
             applicationInfo.put("requirer_sim_country_iso", manager.getSimCountryIso());
