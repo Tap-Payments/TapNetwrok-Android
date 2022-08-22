@@ -35,13 +35,11 @@ public class NetworkApp {
      */
     public static void initNetwork(Context context, String authToken, String appId, String baseUrl , @Nullable String sdkIdentifier) {
         NetworkApp.authToken = authToken;
-        initApplicationInfo(appId,sdkIdentifier);
-
         if (manager != null)
             manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
-
+        initApplicationInfo(appId,sdkIdentifier);
         NetworkController.getInstance().setBaseUrl(baseUrl, context);
         lo.init(context);
     }
