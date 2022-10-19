@@ -26,6 +26,7 @@ public class NetworkApp {
     private static String localeString = "en";
     private static TelephonyManager manager;
     private static String deviceName;
+     static Boolean debugMode;
 
     /**
      * Sets auth token.
@@ -33,14 +34,15 @@ public class NetworkApp {
      * @param context   the context
      * @param authToken the auth token
      */
-    public static void initNetwork(Context context, String authToken, String appId, String baseUrl , @Nullable String sdkIdentifier) {
+    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode) {
         NetworkApp.authToken = authToken;
         if (manager != null)
             manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
+        NetworkApp.debugMode = debugMode;
         initApplicationInfo(appId,sdkIdentifier);
-        NetworkController.getInstance().setBaseUrl(baseUrl, context);
+        NetworkController.getInstance().setBaseUrl(baseUrl, context,debugMode);
         lo.init(context);
     }
     /**
@@ -49,9 +51,9 @@ public class NetworkApp {
      * @param _headerToken   the headertoken
      * */
 
-    public static void initNetworkToken(String _headerToken,Context context, String baseUrl) {
+    public static void initNetworkToken(String _headerToken,Context context, String baseUrl , Boolean debugMode) {
         NetworkApp.headerToken =_headerToken;
-        RetrofitHelper.getApiHelper(baseUrl,context);
+        RetrofitHelper.getApiHelper(baseUrl,context ,debugMode);
         lo.init(context);
     }
 
@@ -137,7 +139,7 @@ public class NetworkApp {
          */
         EN("en"), AR("ar");
 
-        private String language;
+        private final String language;
 
         SupportedLocales(String language) {
             this.language = language;

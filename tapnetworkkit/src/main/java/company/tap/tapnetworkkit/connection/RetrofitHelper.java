@@ -30,13 +30,13 @@ public final class RetrofitHelper {
      *
      * @return the api helper
      */
-    public static APIRequestInterface getApiHelper(String baseUrl, Context context) {
+    public static APIRequestInterface getApiHelper(String baseUrl, Context context , Boolean debugMode) {
         if (retrofit == null) {
             if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();
             }
 
-                 okHttpClient = getOkHttpClient(context);
+                 okHttpClient = getOkHttpClient(context ,debugMode);
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
@@ -80,7 +80,7 @@ public final class RetrofitHelper {
         return GsonConverterFactory.create(myGson);
     }
 
-    private static OkHttpClient getOkHttpClient(Context context) {
+    private static OkHttpClient getOkHttpClient(Context context , Boolean debugMode) {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
         httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
@@ -97,8 +97,13 @@ public final class RetrofitHelper {
                         .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE).build();
                 return chain.proceed(request);
             });
+            if(debugMode|| NetworkApp.debugMode){
+                httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BODY));
 
-        httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BODY));
+            }else{
+                httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.NONE : HttpLoggingInterceptor.Level.NONE));
+
+            }
 
         return httpClientBuilder.build();
     }
