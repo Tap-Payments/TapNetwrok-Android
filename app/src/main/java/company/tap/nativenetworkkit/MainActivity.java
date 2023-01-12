@@ -1,9 +1,11 @@
 package company.tap.nativenetworkkit;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
     Button buttonPay;
     Button buttonDel;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +42,10 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
     public void onSuccess(int responseCode, int requestCode, Response<JsonElement> response) {
         switch (requestCode) {
             case 1: // INIT
+                System.out.println("INIT iss"+response);
                 break;
             case 2: // Payment Option
+                System.out.println("Payment Option iss"+response);
                 break;
             case 3: // Delete Card
                 break;
