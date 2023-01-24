@@ -23,6 +23,7 @@ public class GoSellError implements Serializable {
 
     private int errorCode;
     private String errorBody;
+    private String reasonString;
     private Throwable throwable;
 
     /**
@@ -103,5 +104,12 @@ public class GoSellError implements Serializable {
      */
     public Throwable getThrowable() {
         return throwable;
+    }
+
+    public String getReasonString() throws JSONException {
+        JSONObject jObjResponse = new JSONObject(java.lang.String.valueOf(errorBody));
+        JSONObject jObjResponse1 = new JSONObject(java.lang.String.valueOf(jObjResponse));
+        return jObjResponse1.getString("reason");
+
     }
 }
