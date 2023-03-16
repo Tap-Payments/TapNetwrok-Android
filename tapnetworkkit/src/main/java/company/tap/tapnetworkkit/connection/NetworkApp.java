@@ -12,6 +12,7 @@ import java.util.Map;
 
 import company.tap.tapnetworkkit.controller.NetworkController;
 import company.tap.tapnetworkkit.logger.lo;
+import company.tap.tapnetworkkit.utils.CryptoUtil;
 //import company.tap.nativenetworkkit.BuildConfig;
 
 
@@ -34,14 +35,15 @@ public class NetworkApp {
      * @param context   the context
      * @param authToken the auth token
      */
-    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode) {
+    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode, @Nullable String encryptionKey) {
         NetworkApp.authToken = authToken;
         if (manager != null)
             manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
         NetworkApp.debugMode = debugMode;
-        initApplicationInfo(appId,sdkIdentifier);
+
+        initApplicationInfo(appId,sdkIdentifier,encryptionKey);
         NetworkController.getInstance().setBaseUrl(baseUrl, context,debugMode);
         lo.init(context);
     }
@@ -83,25 +85,27 @@ public class NetworkApp {
      */
     public static void setLocale(String locale) {
         NetworkApp.localeString = locale.length() < 2 ? locale : locale.substring(0, 2);
-        NetworkApp.applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
+        NetworkApp.applicationInfo.put("al", SupportedLocales.findByString(localeString).language);
     }
 
-    private static void initApplicationInfo(String applicationId , String sdkIdentifier) {
+    private static void initApplicationInfo(String applicationId ,String sdkIdentifier,String encryptionKey) {
         applicationInfo = new LinkedHashMap<>();
 
-        applicationInfo.put("app_id", applicationId);
-        applicationInfo.put("requirer", sdkIdentifier);
-        applicationInfo.put("requirer_version","1.0");
-        applicationInfo.put("requirer_os", "Android");
-        applicationInfo.put("requirer_os_version", Build.VERSION.RELEASE);
-        applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
-        applicationInfo.put("requirer_device_name", deviceName);
-        applicationInfo.put("requirer_device_type", Build.BRAND);
-        applicationInfo.put("requirer_device_model", Build.MODEL);
-        applicationInfo.put("requirer_device_manufacturer", Build.MANUFACTURER);
+        applicationInfo.put("aid", CryptoUtil.encryptJsonString(sdkIdentifier, encryptionKey));
+        applicationInfo.put("at", CryptoUtil.encryptJsonString("app", encryptionKey));
+        applicationInfo.put("av", CryptoUtil.encryptJsonString("1.0.0", encryptionKey));
+        applicationInfo.put("rn", CryptoUtil.encryptJsonString(deviceName, encryptionKey));
+        applicationInfo.put("rt", CryptoUtil.encryptJsonString(Build.MANUFACTURER, encryptionKey));
+        applicationInfo.put("rb", CryptoUtil.encryptJsonString(Build.BRAND, encryptionKey));
+        applicationInfo.put("rm", CryptoUtil.encryptJsonString(Build.MODEL, encryptionKey));
+        applicationInfo.put("ro", CryptoUtil.encryptJsonString("Android", encryptionKey));
+        applicationInfo.put("rov", CryptoUtil.encryptJsonString(Build.VERSION.RELEASE, encryptionKey));
+
+        applicationInfo.put("al", CryptoUtil.encryptJsonString(SupportedLocales.findByString(localeString).language, encryptionKey));
+
         if (manager != null) {
-            applicationInfo.put("requirer_sim_network_name", manager.getSimOperatorName());
-            applicationInfo.put("requirer_sim_country_iso", manager.getSimCountryIso());
+            applicationInfo.put("rsn", manager.getSimOperatorName());
+            applicationInfo.put("rsc", manager.getSimCountryIso());
         }
     }
 

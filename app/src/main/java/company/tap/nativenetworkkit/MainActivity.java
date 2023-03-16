@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         buttonPay = findViewById(R.id.button_Pay);
         buttonDel = findViewById(R.id.button_Delete);
 
-        NetworkApp.initNetwork(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y", "company.tap.goSellSDKExample", APIMethods.BASE_URL,"Native",false);
-
+      //  NetworkApp.initNetwork(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y", "company.tap.goSellSDKExample", APIMethods.BASE_URL,"Native",false);
+        NetworkApp.initNetwork(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y", "company.tap.goSellSDKExample", APIMethods.BASE_URL,"android-checkout-sdk",true,getResources().getString(R.string.enryptkey));
         TapRepository.getInstance().init(this, getBaseContext());
 
         buttonPay.setOnClickListener(this);
