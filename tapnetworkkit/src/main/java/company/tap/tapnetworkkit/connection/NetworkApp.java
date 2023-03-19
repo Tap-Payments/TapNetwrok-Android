@@ -70,7 +70,8 @@ public class NetworkApp {
      * @return the _header token
      */
     static String getHeaderToken() {
-        return headerToken;
+        if(headerToken==null) return "";
+       else return headerToken;
     }
 
     /**
