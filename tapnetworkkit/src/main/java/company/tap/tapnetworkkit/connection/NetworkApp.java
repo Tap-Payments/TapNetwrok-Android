@@ -23,6 +23,8 @@ public class NetworkApp {
     //auth information for headers
     private static String authToken;
     private static String headerToken;
+    private static String packageId;
+    private static String encryptionKey;
     private static LinkedHashMap<Object, Object> applicationInfo;
     private static String localeString = "en";
     private static TelephonyManager manager;
@@ -35,8 +37,11 @@ public class NetworkApp {
      * @param context   the context
      * @param authToken the auth token
      */
-    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode, @Nullable String encryptionKey) {
+    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode, @Nullable String _encryptionKey) {
         NetworkApp.authToken = authToken;
+        NetworkApp.packageId = appId;
+
+        encryptionKey = _encryptionKey;
         if (manager != null)
             manager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
@@ -44,7 +49,7 @@ public class NetworkApp {
         NetworkApp.debugMode = debugMode;
 
         initApplicationInfo(appId,sdkIdentifier,encryptionKey);
-        NetworkController.getInstance().setBaseUrl(baseUrl, context,debugMode);
+        NetworkController.getInstance().setBaseUrl(baseUrl, context,debugMode,appId);
         lo.init(context);
     }
     /**
@@ -55,7 +60,7 @@ public class NetworkApp {
 
     public static void initNetworkToken(String _headerToken,Context context, String baseUrl , Boolean debugMode) {
         NetworkApp.headerToken =_headerToken;
-        RetrofitHelper.getApiHelper(baseUrl,context ,debugMode);
+        RetrofitHelper.getApiHelper(baseUrl,context ,debugMode, packageId);
         lo.init(context);
     }
 
@@ -68,6 +73,14 @@ public class NetworkApp {
         return headerToken;
     }
 
+    /**
+     * Gets PackageID .
+     *
+     * @return the _packageID
+     */
+    static String getPackageId() {
+        return CryptoUtil.encryptJsonString(packageId,encryptionKey);
+    }
 
     /**
      * Gets auth token.
@@ -107,6 +120,7 @@ public class NetworkApp {
             applicationInfo.put("rsn", manager.getSimOperatorName());
             applicationInfo.put("rsc", manager.getSimCountryIso());
         }
+
     }
 
     /**

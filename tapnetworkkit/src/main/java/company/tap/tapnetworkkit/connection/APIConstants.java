@@ -37,6 +37,14 @@ public final class APIConstants {
      * The Auth token prefix.
      */
     public static final String TOKEN_PREFIX = "token";
+ /**
+     * The session prefix.
+     */
+    public static final String SESSION_PREFIX = "session";
+/**
+     * The Package ID prefix.
+     */
+    public static final String PACKAGE_ID= "mdn";
 
 
 

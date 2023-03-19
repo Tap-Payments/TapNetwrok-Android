@@ -30,9 +30,8 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         buttonPay = findViewById(R.id.button_Pay);
         buttonDel = findViewById(R.id.button_Delete);
 
-      //  NetworkApp.initNetwork(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y", "company.tap.goSellSDKExample", APIMethods.BASE_URL,"Native",false);
-        NetworkApp.initNetwork(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y", "company.tap.goSellSDKExample", APIMethods.BASE_URL,"android-checkout-sdk",true,getResources().getString(R.string.enryptkey));
-        TapRepository.getInstance().init(this, getBaseContext());
+     //   NetworkApp.initNetwork(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y", "company.tap.goSellSDKExample", APIMethods.BASE_URL,"android-checkout-sdk",true,getResources().getString(R.string.enryptkey));
+        NetworkApp.initNetwork(this, "pk_test_Vlk842B1EA7tDN5QbrfGjYzh", "company.tap.goSellSDKExample", APIMethods.BASE_URL,"android-checkout-sdk",true,getResources().getString(R.string.enryptkey));
 
         buttonPay.setOnClickListener(this);
         buttonDel.setOnClickListener(this);
@@ -57,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         lo.g(errorDetails.getErrorBody());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.button_Pay) {
@@ -67,7 +67,9 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
             PaymentOptionsRequest requestBody = new PaymentOptionsRequest(TransactionMode.PURCHASE, "kwd", 1.0, "KNET");
             String jsonString = new Gson().toJson(requestBody);
             System.out.println("jsonString<<<>>>>"+jsonString);
-            TapRepository.getInstance().getPaymentOptions(jsonString, this);
+           // TapRepository.getInstance().getPaymentOptions(jsonString, this);
+            TapRepository.getInstance().init(this, getBaseContext(),jsonString);
+
         }
         if (v.getId() == R.id.button_Delete) {
             //Sending dummy values to check delete request

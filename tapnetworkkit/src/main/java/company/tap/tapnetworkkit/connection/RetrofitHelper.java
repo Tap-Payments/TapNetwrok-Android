@@ -10,7 +10,9 @@ import java.util.concurrent.TimeUnit;
 //import company.tap.nativenetworkkit.BuildConfig;
 import company.tap.tapnetworkkit.exception.NoAuthTokenProvidedException;
 import company.tap.tapnetworkkit.interfaces.APIRequestInterface;
+import company.tap.tapnetworkkit.utils.CryptoUtil;
 import company.tap.tapnetworkkit_android.BuildConfig;
+import company.tap.tapnetworkkit_android.R;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -30,13 +32,13 @@ public final class RetrofitHelper {
      *
      * @return the api helper
      */
-    public static APIRequestInterface getApiHelper(String baseUrl, Context context , Boolean debugMode) {
+    public static APIRequestInterface getApiHelper(String baseUrl, Context context , Boolean debugMode, String packageId) {
         if (retrofit == null) {
             if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();
             }
 
-                 okHttpClient = getOkHttpClient(context ,debugMode);
+                 okHttpClient = getOkHttpClient(context ,debugMode, packageId);
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
@@ -80,7 +82,7 @@ public final class RetrofitHelper {
         return GsonConverterFactory.create(myGson);
     }
 
-    private static OkHttpClient getOkHttpClient(Context context , Boolean debugMode) {
+    private static OkHttpClient getOkHttpClient(Context context , Boolean debugMode, String packageId) {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
         httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
@@ -90,11 +92,15 @@ public final class RetrofitHelper {
             httpClientBuilder.addInterceptor(chain -> {
                 Request request = chain.request()
                         .newBuilder()
-                        .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
-                        .addHeader(APIConstants.AUTH_TOKEN_KEY, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getAuthToken())
+                       // .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
+                      //  .addHeader(APIConstants.SESSION_PREFIX , NetworkApp.getHeaderToken())
+                        .addHeader(APIConstants.AUTH_TOKEN_KEY,  NetworkApp.getAuthToken())
+                        .addHeader(APIConstants.PACKAGE_ID,NetworkApp.getPackageId())
                         .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
                         .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
-                        .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE).build();
+                        .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE)
+                        .build();
+
                 return chain.proceed(request);
             });
             if(debugMode|| NetworkApp.debugMode){

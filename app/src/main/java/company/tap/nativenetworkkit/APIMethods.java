@@ -4,12 +4,13 @@ public final class APIMethods {
     /**
      * The Base url.
      */
-    public static final String BASE_URL = "https://api.tap.company/v2/";
+  //  public static final String BASE_URL = "https://api.tap.company/v2/";
+    public static final String BASE_URL = "https://checkout-mw-java.dev.tap.company/v2/ ";
     /**
      * The constant INIT.
      */
 //url parts
-    static final String INIT = "init";
+    static final String INIT = "checkoutprofile";
 
     /**
      * The Token.
