@@ -104,6 +104,7 @@ public class NetworkApp {
     private static void initApplicationInfo(String applicationId ,String sdkIdentifier,String encryptionKey) {
         applicationInfo = new LinkedHashMap<>();
 
+        applicationInfo.put("cu", CryptoUtil.encryptJsonString(applicationId, encryptionKey));
         applicationInfo.put("aid", CryptoUtil.encryptJsonString(sdkIdentifier, encryptionKey));
         applicationInfo.put("at", CryptoUtil.encryptJsonString("app", encryptionKey));
         applicationInfo.put("av", CryptoUtil.encryptJsonString("1.0.0", encryptionKey));
