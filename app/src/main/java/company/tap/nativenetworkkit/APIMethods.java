@@ -5,7 +5,8 @@ public final class APIMethods {
      * The Base url.
      */
   //  public static final String BASE_URL = "https://api.tap.company/v2/";
-    public static final String BASE_URL = "https://checkout-mw-java.dev.tap.company/v2/ ";
+    public static final String BASE_URL = "https://mw-sdk.dev.tap.company/v2/";
+
     /**
      * The constant INIT.
      */

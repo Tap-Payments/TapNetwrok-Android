@@ -103,14 +103,24 @@ public final class RetrofitHelper {
 
                 return chain.proceed(request);
             });
-            if(debugMode|| NetworkApp.debugMode){
-                httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BODY));
+        httpClientBuilder.addInterceptor(getLogging(debugMode));
+           /* if(debugMode|| NetworkApp.debugMode){
+                httpClientBuilder.addInterceptor(getLogging(debugMode));
 
             }else{
                 httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.NONE : HttpLoggingInterceptor.Level.NONE));
 
             }
-
+*/
         return httpClientBuilder.build();
+    }
+
+    public static HttpLoggingInterceptor getLogging(Boolean debugMode){
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        if(debugMode|| NetworkApp.debugMode){
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        }else logging.setLevel(HttpLoggingInterceptor.Level.NONE);
+
+        return logging;
     }
 }

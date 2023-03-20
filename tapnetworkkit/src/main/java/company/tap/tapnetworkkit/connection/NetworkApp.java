@@ -13,6 +13,7 @@ import java.util.Map;
 import company.tap.tapnetworkkit.controller.NetworkController;
 import company.tap.tapnetworkkit.logger.lo;
 import company.tap.tapnetworkkit.utils.CryptoUtil;
+import okhttp3.logging.HttpLoggingInterceptor;
 //import company.tap.nativenetworkkit.BuildConfig;
 
 
@@ -153,6 +154,10 @@ public class NetworkApp {
         return stringBuilder.toString();
     }
 
+    public static HttpLoggingInterceptor getIntercepters(Boolean debugMode) {
+       return RetrofitHelper.getLogging(debugMode);
+    }
+
     private enum SupportedLocales {
         /**
          * En supported locales.
@@ -182,5 +187,7 @@ public class NetworkApp {
         }
 
     }
+
+
 }
  
