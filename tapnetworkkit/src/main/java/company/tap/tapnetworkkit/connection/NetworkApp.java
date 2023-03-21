@@ -1,5 +1,6 @@
 package company.tap.tapnetworkkit.connection;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
@@ -38,7 +39,7 @@ public class NetworkApp {
      * @param context   the context
      * @param authToken the auth token
      */
-    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode, @Nullable String _encryptionKey) {
+    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode, @Nullable String _encryptionKey, Activity activity) {
         NetworkApp.authToken = authToken;
         NetworkApp.packageId = appId;
 
@@ -50,7 +51,7 @@ public class NetworkApp {
         NetworkApp.debugMode = debugMode;
 
         initApplicationInfo(appId,sdkIdentifier,encryptionKey);
-        NetworkController.getInstance().setBaseUrl(baseUrl, context,debugMode,appId);
+        NetworkController.getInstance().setBaseUrl(baseUrl, context,debugMode,appId,activity);
         lo.init(context);
     }
     /**
@@ -59,9 +60,9 @@ public class NetworkApp {
      * @param _headerToken   the headertoken
      * */
 
-    public static void initNetworkToken(String _headerToken,Context context, String baseUrl , Boolean debugMode) {
+    public static void initNetworkToken(String _headerToken, Context context, String baseUrl , Boolean debugMode, Activity activity) {
         NetworkApp.headerToken =_headerToken;
-        RetrofitHelper.getApiHelper(baseUrl,context ,debugMode, packageId);
+        RetrofitHelper.getApiHelper(baseUrl,context ,debugMode, packageId,activity);
         lo.init(context);
     }
 

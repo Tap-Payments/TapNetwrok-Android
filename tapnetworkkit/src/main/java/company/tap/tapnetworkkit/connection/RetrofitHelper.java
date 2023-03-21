@@ -1,5 +1,6 @@
 package company.tap.tapnetworkkit.connection;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -35,7 +36,7 @@ public final class RetrofitHelper {
      *
      * @return the api helper
      */
-    public static APIRequestInterface getApiHelper(String baseUrl, Context context , Boolean debugMode, String packageId) {
+    public static APIRequestInterface getApiHelper(String baseUrl, Context context , Boolean debugMode, String packageId, Activity activity) {
         if (retrofit == null) {
             if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();
@@ -53,7 +54,7 @@ public final class RetrofitHelper {
         if (helper == null) {
             helper = retrofit.create(APIRequestInterface.class);
         }
-        APILoggInterface = (APILoggInterface) context;
+        APILoggInterface = (APILoggInterface) activity;
         return helper;
     }
 
@@ -121,7 +122,7 @@ public final class RetrofitHelper {
     public static HttpLoggingInterceptor getLogging(Boolean debugMode){
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override public void log(String message) {
-                Log.d(TAG, "OkHttp: " + message);
+               // Log.d(TAG, "OkHttp: " + message);
                 APILoggInterface.onLoggingEvent(message);
             }
         });

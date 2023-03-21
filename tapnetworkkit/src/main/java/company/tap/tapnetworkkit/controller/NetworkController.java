@@ -1,5 +1,6 @@
 package company.tap.tapnetworkkit.controller;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 
@@ -25,8 +26,8 @@ public class NetworkController {
     /**
      * Required to set baseURL on retrofit
      */
-    public void setBaseUrl(String baseURL, Context context, Boolean debugMode, String packageId) {
-        apiRequestInterface = RetrofitHelper.getApiHelper(baseURL, context, debugMode,packageId);
+    public void setBaseUrl(String baseURL, Context context, Boolean debugMode, String packageId, Activity activity) {
+        apiRequestInterface = RetrofitHelper.getApiHelper(baseURL, context, debugMode,packageId, activity);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         buttonDel = findViewById(R.id.button_Delete);
 
      //   NetworkApp.initNetwork(this, "sk_test_kovrMB0mupFJXfNZWx6Etg5y", "company.tap.goSellSDKExample", APIMethods.BASE_URL,"android-checkout-sdk",true,getResources().getString(R.string.enryptkey));
-        NetworkApp.initNetwork(this, "pk_test_Vlk842B1EA7tDN5QbrfGjYzh", "company.tap.goSellSDKExample", APIMethods.BASE_URL,"android-checkout-sdk",true,getResources().getString(R.string.enryptkey));
+        NetworkApp.initNetwork(this, "pk_test_Vlk842B1EA7tDN5QbrfGjYzh", "company.tap.goSellSDKExample", APIMethods.BASE_URL,"android-checkout-sdk",true,getResources().getString(R.string.enryptkey),this);
 
         buttonPay.setOnClickListener(this);
         buttonDel.setOnClickListener(this);
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
 
         }
         if (v.getId() == R.id.button_Delete) {
-            NetworkApp.initNetworkToken("eyJhbGciOiJIUzI1NiJ9.eyJpZCI6InNlc3Npb25feWZSdDI0MjMxMjBOdGs0MTk5cjJxMTY2IiwiZXhwIjoxNjc5MjI5MDI0fQ.B6VXyhWE53e77CKXJhZWW7wf527js6gB4JDi-csCMzQ",this,APIMethods.BASE_URL,true);
+            NetworkApp.initNetworkToken("eyJhbGciOiJIUzI1NiJ9.eyJpZCI6InNlc3Npb25feWZSdDI0MjMxMjBOdGs0MTk5cjJxMTY2IiwiZXhwIjoxNjc5MjI5MDI0fQ.B6VXyhWE53e77CKXJhZWW7wf527js6gB4JDi-csCMzQ",this,APIMethods.BASE_URL,true, this);
             //Sending dummy values to check delete request
             TapRepository.getInstance().deleteCard("cus_10000", "83921741382", this);
 
