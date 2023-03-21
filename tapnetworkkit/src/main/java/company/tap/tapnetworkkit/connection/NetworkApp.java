@@ -7,6 +7,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class NetworkApp {
      * @param context   the context
      * @param authToken the auth token
      */
-    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode, @Nullable String _encryptionKey, Activity activity) {
+    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode, @Nullable String _encryptionKey, AppCompatActivity activity) {
         NetworkApp.authToken = authToken;
         NetworkApp.packageId = appId;
 
@@ -60,7 +61,7 @@ public class NetworkApp {
      * @param _headerToken   the headertoken
      * */
 
-    public static void initNetworkToken(String _headerToken, Context context, String baseUrl , Boolean debugMode, Activity activity) {
+    public static void initNetworkToken(String _headerToken, Context context, String baseUrl , Boolean debugMode, AppCompatActivity activity) {
         NetworkApp.headerToken =_headerToken;
         RetrofitHelper.getApiHelper(baseUrl,context ,debugMode, packageId,activity);
         lo.init(context);

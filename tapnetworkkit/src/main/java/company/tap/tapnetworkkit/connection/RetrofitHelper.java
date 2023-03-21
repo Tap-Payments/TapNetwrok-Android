@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -36,7 +38,7 @@ public final class RetrofitHelper {
      *
      * @return the api helper
      */
-    public static APIRequestInterface getApiHelper(String baseUrl, Context context , Boolean debugMode, String packageId, Activity activity) {
+    public static APIRequestInterface getApiHelper(String baseUrl, Context context , Boolean debugMode, String packageId, AppCompatActivity activity) {
         if (retrofit == null) {
             if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();

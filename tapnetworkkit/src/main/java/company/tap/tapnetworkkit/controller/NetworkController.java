@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,7 +27,7 @@ public class NetworkController {
     /**
      * Required to set baseURL on retrofit
      */
-    public void setBaseUrl(String baseURL, Context context, Boolean debugMode, String packageId, Activity activity) {
+    public void setBaseUrl(String baseURL, Context context, Boolean debugMode, String packageId, AppCompatActivity activity) {
         apiRequestInterface = RetrofitHelper.getApiHelper(baseURL, context, debugMode,packageId, activity);
     }
 
