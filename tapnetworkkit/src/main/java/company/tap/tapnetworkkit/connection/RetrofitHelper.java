@@ -1,6 +1,7 @@
 package company.tap.tapnetworkkit.connection;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,9 +11,8 @@ import java.util.concurrent.TimeUnit;
 //import company.tap.nativenetworkkit.BuildConfig;
 import company.tap.tapnetworkkit.exception.NoAuthTokenProvidedException;
 import company.tap.tapnetworkkit.interfaces.APIRequestInterface;
-import company.tap.tapnetworkkit.utils.CryptoUtil;
+import company.tap.tapnetworkkit.interfaces.APILoggInterface;
 import company.tap.tapnetworkkit_android.BuildConfig;
-import company.tap.tapnetworkkit_android.R;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -25,7 +25,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public final class RetrofitHelper {
     private static Retrofit retrofit;
     private static APIRequestInterface helper;
+    private static APILoggInterface APILoggInterface;
     static OkHttpClient okHttpClient;
+    private static final String TAG = "RetrofitHelper";
+
 
     /**
      * Gets api helper.
@@ -50,7 +53,7 @@ public final class RetrofitHelper {
         if (helper == null) {
             helper = retrofit.create(APIRequestInterface.class);
         }
-
+        APILoggInterface = (APILoggInterface) context;
         return helper;
     }
 
@@ -116,7 +119,12 @@ public final class RetrofitHelper {
     }
 
     public static HttpLoggingInterceptor getLogging(Boolean debugMode){
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override public void log(String message) {
+                Log.d(TAG, "OkHttp: " + message);
+                APILoggInterface.onLoggingEvent(message);
+            }
+        });
         if(debugMode|| NetworkApp.debugMode){
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         }else logging.setLevel(HttpLoggingInterceptor.Level.NONE);

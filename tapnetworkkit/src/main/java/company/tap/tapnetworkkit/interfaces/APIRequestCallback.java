@@ -23,4 +23,5 @@ public interface APIRequestCallback {
      * @param errorDetails {@link GoSellError} representing a failure reason
      */
     void onFailure(int requestCode, GoSellError errorDetails);
+
 }

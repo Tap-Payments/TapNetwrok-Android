@@ -14,10 +14,11 @@ import com.google.gson.JsonElement;
 import company.tap.tapnetworkkit.connection.NetworkApp;
 import company.tap.tapnetworkkit.exception.GoSellError;
 import company.tap.tapnetworkkit.interfaces.APIRequestCallback;
+import company.tap.tapnetworkkit.interfaces.APILoggInterface;
 import company.tap.tapnetworkkit.logger.lo;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements APIRequestCallback, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements APIRequestCallback, View.OnClickListener , APILoggInterface {
 
     Button buttonPay;
     Button buttonDel;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         lo.g(errorDetails.getErrorBody());
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
@@ -77,5 +79,10 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
             TapRepository.getInstance().deleteCard("cus_10000", "83921741382", this);
 
         }
+    }
+
+    @Override
+    public void onLoggingEvent(String logs) {
+        System.out.println("onLoggingEvent >>>>>"+logs);
     }
 }
