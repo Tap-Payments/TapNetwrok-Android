@@ -110,6 +110,7 @@ public final class RetrofitHelper {
                 return chain.proceed(request);
             });
         httpClientBuilder.addInterceptor(getLogging(debugMode));
+
            /* if(debugMode|| NetworkApp.debugMode){
                 httpClientBuilder.addInterceptor(getLogging(debugMode));
 
@@ -124,7 +125,7 @@ public final class RetrofitHelper {
     public static HttpLoggingInterceptor getLogging(Boolean debugMode){
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override public void log(String message) {
-               // Log.d(TAG, "OkHttp: " + message);
+                Log.d(TAG, "OkHttp: " + message);
                 APILoggInterface.onLoggingEvent(message);
             }
         });
