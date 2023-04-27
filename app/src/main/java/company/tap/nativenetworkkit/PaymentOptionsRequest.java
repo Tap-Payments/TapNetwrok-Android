@@ -18,6 +18,9 @@ public class PaymentOptionsRequest implements TapRequestBodyBase {
     @Expose
     @NonNull private String currency;
 
+
+
+
     @SerializedName("total_amount")
     @Expose
     @NonNull private Double totalAmount;
