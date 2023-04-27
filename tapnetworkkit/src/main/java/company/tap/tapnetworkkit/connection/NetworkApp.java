@@ -168,7 +168,7 @@ public class NetworkApp {
         return userIpAddress;
     }
 
-    public void setUserIpAddress(String userIpAddress) {
+    public static void setUserIpAddress(String userIpAddress) {
         NetworkApp.userIpAddress = userIpAddress;
     }
 
