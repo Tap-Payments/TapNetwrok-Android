@@ -46,6 +46,12 @@ public final class APIConstants {
      */
     public static final String PACKAGE_ID= "mdn";
 
+    /**
+     * IP Address
+     */
+
+    public static final String IP_ADDRESS = "ip";
+
 
 
 

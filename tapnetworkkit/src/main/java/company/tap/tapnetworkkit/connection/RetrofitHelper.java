@@ -105,6 +105,8 @@ public final class RetrofitHelper {
                         .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
                         .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
                         .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE)
+                        .addHeader(APIConstants.IP_ADDRESS, NetworkApp.getUserIpAddress())
+
                         .build();
 
                 return chain.proceed(request);

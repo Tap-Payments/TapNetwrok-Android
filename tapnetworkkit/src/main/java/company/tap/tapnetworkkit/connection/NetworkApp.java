@@ -32,7 +32,9 @@ public class NetworkApp {
     private static String localeString = "en";
     private static TelephonyManager manager;
     private static String deviceName;
-     static Boolean debugMode;
+    static Boolean debugMode;
+
+    private static String userIpAddress="";
 
     /**
      * Sets auth token.
@@ -51,19 +53,20 @@ public class NetworkApp {
         deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
         NetworkApp.debugMode = debugMode;
 
-        initApplicationInfo(appId,sdkIdentifier,encryptionKey);
-        NetworkController.getInstance().setBaseUrl(baseUrl, context,debugMode,appId,activity);
+        initApplicationInfo(appId, sdkIdentifier, encryptionKey);
+        NetworkController.getInstance().setBaseUrl(baseUrl, context, debugMode, appId, activity);
         lo.init(context);
     }
+
     /**
      * Sets header token.
      *
-     * @param _headerToken   the headertoken
-     * */
+     * @param _headerToken the headertoken
+     */
 
-    public static void initNetworkToken(String _headerToken, Context context, String baseUrl , Boolean debugMode, AppCompatActivity activity) {
-        NetworkApp.headerToken =_headerToken;
-        RetrofitHelper.getApiHelper(baseUrl,context ,debugMode, packageId,activity);
+    public static void initNetworkToken(String _headerToken, Context context, String baseUrl, Boolean debugMode, AppCompatActivity activity) {
+        NetworkApp.headerToken = _headerToken;
+        RetrofitHelper.getApiHelper(baseUrl, context, debugMode, packageId, activity);
         lo.init(context);
     }
 
@@ -73,8 +76,8 @@ public class NetworkApp {
      * @return the _header token
      */
     static String getHeaderToken() {
-        if(headerToken==null) return "";
-       else return headerToken;
+        if (headerToken == null) return "";
+        else return headerToken;
     }
 
     /**
@@ -83,7 +86,7 @@ public class NetworkApp {
      * @return the _packageID
      */
     static String getPackageId() {
-        return CryptoUtil.encryptJsonString(packageId,encryptionKey);
+        return CryptoUtil.encryptJsonString(packageId, encryptionKey);
     }
 
     /**
@@ -105,7 +108,7 @@ public class NetworkApp {
         NetworkApp.applicationInfo.put("al", SupportedLocales.findByString(localeString).language);
     }
 
-    private static void initApplicationInfo(String applicationId ,String sdkIdentifier,String encryptionKey) {
+    private static void initApplicationInfo(String applicationId, String sdkIdentifier, String encryptionKey) {
         applicationInfo = new LinkedHashMap<>();
 
         applicationInfo.put("cu", CryptoUtil.encryptJsonString(applicationId, encryptionKey));
@@ -156,8 +159,17 @@ public class NetworkApp {
         return stringBuilder.toString();
     }
 
+
     public static HttpLoggingInterceptor getIntercepters(Boolean debugMode) {
-       return RetrofitHelper.getLogging(debugMode);
+        return RetrofitHelper.getLogging(debugMode);
+    }
+
+    public static String getUserIpAddress() {
+        return userIpAddress;
+    }
+
+    public void setUserIpAddress(String userIpAddress) {
+        NetworkApp.userIpAddress = userIpAddress;
     }
 
     private enum SupportedLocales {
