@@ -38,13 +38,13 @@ public final class RetrofitHelper {
      *
      * @return the api helper
      */
-    public static APIRequestInterface getApiHelper(String baseUrl, Context context , Boolean debugMode, String packageId, AppCompatActivity activity) {
+    public static APIRequestInterface getApiHelper(String baseUrl, Context context, Boolean debugMode, String packageId, AppCompatActivity activity) {
         if (retrofit == null) {
             if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();
             }
 
-                 okHttpClient = getOkHttpClient(context ,debugMode, packageId);
+            okHttpClient = getOkHttpClient(context, debugMode, packageId);
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
@@ -88,29 +88,29 @@ public final class RetrofitHelper {
         return GsonConverterFactory.create(myGson);
     }
 
-    private static OkHttpClient getOkHttpClient(Context context , Boolean debugMode, String packageId) {
+    private static OkHttpClient getOkHttpClient(Context context, Boolean debugMode, String packageId) {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
         httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
         httpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
         httpClientBuilder.addInterceptor(new NetworkConnectionInterceptor(context));
 
-            httpClientBuilder.addInterceptor(chain -> {
-                Request request = chain.request()
-                        .newBuilder()
-                       // .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
-                        .addHeader(APIConstants.AUTH_TOKEN_KEY,  NetworkApp.getAuthToken())
-                        .addHeader(APIConstants.PACKAGE_ID,NetworkApp.getPackageId())
-                        .addHeader(APIConstants.SESSION_PREFIX , NetworkApp.getHeaderToken())
-                        .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
-                        .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
-                        .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE)
-                        .addHeader(APIConstants.IP_ADDRESS, NetworkApp.getUserIpAddress())
+        httpClientBuilder.addInterceptor(chain -> {
+            Request request = chain.request()
+                    .newBuilder()
+                    // .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
+                    .addHeader(APIConstants.AUTH_TOKEN_KEY, NetworkApp.getAuthToken())
+                    .addHeader(APIConstants.PACKAGE_ID, NetworkApp.getPackageId())
+                    .addHeader(APIConstants.SESSION_PREFIX, NetworkApp.getHeaderToken())
+                    .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
+                    .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
+                    .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE)
+                    .addHeader(APIConstants.IP_ADDRESS, NetworkApp.getUserIpAddress())
 
-                        .build();
+                    .build();
 
-                return chain.proceed(request);
-            });
+            return chain.proceed(request);
+        });
         httpClientBuilder.addInterceptor(getLogging(debugMode));
 
            /* if(debugMode|| NetworkApp.debugMode){
@@ -124,16 +124,19 @@ public final class RetrofitHelper {
         return httpClientBuilder.build();
     }
 
-    public static HttpLoggingInterceptor getLogging(Boolean debugMode){
+    public static HttpLoggingInterceptor getLogging(Boolean debugMode) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override public void log(String message) {
-                Log.d(TAG, "OkHttp: " + message);
-                APILoggInterface.onLoggingEvent(message);
+            @Override
+            public void log(String message) {
+                if (message != null) {
+                    Log.d(TAG, "OkHttp: " + message);
+                    APILoggInterface.onLoggingEvent(message);
+                }
             }
         });
-        if(debugMode|| NetworkApp.debugMode){
+        if (debugMode || NetworkApp.debugMode) {
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        }else logging.setLevel(HttpLoggingInterceptor.Level.NONE);
+        } else logging.setLevel(HttpLoggingInterceptor.Level.NONE);
 
         return logging;
     }
