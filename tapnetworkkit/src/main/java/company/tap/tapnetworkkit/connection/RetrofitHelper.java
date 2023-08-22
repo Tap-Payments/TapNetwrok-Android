@@ -98,8 +98,8 @@ public final class RetrofitHelper {
         httpClientBuilder.addInterceptor(chain -> {
             Request request = chain.request()
                     .newBuilder()
-                    //   .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
-                    .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getAuthToken())
+                    // .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
+                    .addHeader(APIConstants.AUTH_TOKEN_KEY, NetworkApp.getAuthToken())
                     .addHeader(APIConstants.PACKAGE_ID, NetworkApp.getPackageId())
                     .addHeader(APIConstants.SESSION_PREFIX, NetworkApp.getHeaderToken())
                     .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
