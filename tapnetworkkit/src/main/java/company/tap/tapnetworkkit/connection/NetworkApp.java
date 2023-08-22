@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -53,7 +54,9 @@ public class NetworkApp {
         deviceName = Settings.Global.getString(context.getContentResolver(), Settings.Global.DEVICE_NAME);
         NetworkApp.debugMode = debugMode;
 
-        initApplicationInfo(appId, sdkIdentifier, encryptionKey);
+       // initApplicationInfo(appId, sdkIdentifier, encryptionKey);
+        initApplicationInfoForGoSell(appId);
+
         NetworkController.getInstance().setBaseUrl(baseUrl, context, debugMode, appId, activity);
         lo.init(context);
     }
@@ -129,6 +132,36 @@ public class NetworkApp {
             applicationInfo.put("rsc", manager.getSimCountryIso());
         }
 
+    }
+    private static void initApplicationInfoForGoSell(String applicationId) {
+        applicationInfo = new LinkedHashMap<>();
+        String encodeddevice=null;
+        applicationInfo.put("app_id", applicationId);
+        applicationInfo.put("requirer", "SDK");
+        applicationInfo.put("requirer_version", "2");
+        applicationInfo.put("requirer_os", "Android");
+        applicationInfo.put("requirer_os_version", Build.VERSION.RELEASE);
+        if(localeString==null){
+            applicationInfo.put("app_locale", getLocaleString());
+
+        }else{
+            applicationInfo.put("app_locale", SupportedLocales.findByString(localeString).language);
+
+        }
+        if(deviceName!=null){
+            encodeddevice= Base64.encodeToString(deviceName.getBytes(),Base64.NO_WRAP);
+            applicationInfo.put("requirer_device_name",encodeddevice);
+
+        }else{
+            applicationInfo.put("requirer_device_name","deviceName");
+        }
+        applicationInfo.put("requirer_device_type",Build.BRAND);
+        applicationInfo.put("requirer_device_model",Build.MODEL);
+        applicationInfo.put("sdk_version","2");
+        if(manager!=null) {
+            applicationInfo.put("requirer_sim_network_name", manager.getSimOperatorName());
+            applicationInfo.put("requirer_sim_country_iso", manager.getSimCountryIso());
+        }
     }
 
     /**
