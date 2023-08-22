@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
@@ -31,6 +32,8 @@ public final class RetrofitHelper {
     private static APILoggInterface APILoggInterface;
     static OkHttpClient okHttpClient;
     private static final String TAG = "RetrofitHelper";
+    private static  Activity activityListeningForLoggerEvents = null;
+
 
 
     /**
@@ -38,7 +41,7 @@ public final class RetrofitHelper {
      *
      * @return the api helper
      */
-    public static APIRequestInterface getApiHelper(String baseUrl, Context context, Boolean debugMode, String packageId, AppCompatActivity activity) {
+    public static APIRequestInterface getApiHelper(String baseUrl, Context context, Boolean debugMode, String packageId,@Nullable AppCompatActivity activity) {
         if (retrofit == null) {
             if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();
@@ -56,7 +59,10 @@ public final class RetrofitHelper {
         if (helper == null) {
             helper = retrofit.create(APIRequestInterface.class);
         }
-        APILoggInterface = (APILoggInterface) activity;
+        if (activity != null){
+            activityListeningForLoggerEvents = activity;
+            APILoggInterface = (APILoggInterface) activityListeningForLoggerEvents;
+        }
         return helper;
     }
 
@@ -130,7 +136,9 @@ public final class RetrofitHelper {
             public void log(String message) {
                 if (message != null) {
                     Log.d(TAG, "OkHttp: " + message);
-                    APILoggInterface.onLoggingEvent(message);
+                    if (activityListeningForLoggerEvents != null){
+                        APILoggInterface.onLoggingEvent(message);
+                    }
                 }
             }
         });

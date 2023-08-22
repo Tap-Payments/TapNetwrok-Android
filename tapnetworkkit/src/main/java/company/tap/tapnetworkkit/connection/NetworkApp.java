@@ -42,7 +42,7 @@ public class NetworkApp {
      * @param context   the context
      * @param authToken the auth token
      */
-    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode, @Nullable String _encryptionKey, AppCompatActivity activity) {
+    public static void initNetwork(Context context, String authToken, String appId, String baseUrl, @Nullable String sdkIdentifier, Boolean debugMode, @Nullable String _encryptionKey,@Nullable AppCompatActivity activity) {
         NetworkApp.authToken = authToken;
         NetworkApp.packageId = appId;
 
@@ -64,7 +64,7 @@ public class NetworkApp {
      * @param _headerToken the headertoken
      */
 
-    public static void initNetworkToken(String _headerToken, Context context, String baseUrl, Boolean debugMode, AppCompatActivity activity) {
+    public static void initNetworkToken(String _headerToken, Context context, String baseUrl, Boolean debugMode,@Nullable AppCompatActivity activity) {
         NetworkApp.headerToken = _headerToken;
         RetrofitHelper.getApiHelper(baseUrl, context, debugMode, packageId, activity);
         lo.init(context);

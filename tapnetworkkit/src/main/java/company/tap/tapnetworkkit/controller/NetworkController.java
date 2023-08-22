@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +28,7 @@ public class NetworkController {
     /**
      * Required to set baseURL on retrofit
      */
-    public void setBaseUrl(String baseURL, Context context, Boolean debugMode, String packageId, AppCompatActivity activity) {
+    public void setBaseUrl(String baseURL, Context context, Boolean debugMode, String packageId, @Nullable AppCompatActivity activity) {
         apiRequestInterface = RetrofitHelper.getApiHelper(baseURL, context, debugMode,packageId, activity);
     }
 
