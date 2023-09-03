@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 //import company.tap.nativenetworkkit.BuildConfig;
@@ -19,7 +20,10 @@ import company.tap.tapnetworkkit.interfaces.APILoggInterface;
 import company.tap.tapnetworkkit_android.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okio.Buffer;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -32,8 +36,7 @@ public final class RetrofitHelper {
     private static APILoggInterface APILoggInterface;
     static OkHttpClient okHttpClient;
     private static final String TAG = "RetrofitHelper";
-    private static  Activity activityListeningForLoggerEvents = null;
-
+    private static Activity activityListeningForLoggerEvents = null;
 
 
     /**
@@ -41,7 +44,7 @@ public final class RetrofitHelper {
      *
      * @return the api helper
      */
-    public static APIRequestInterface getApiHelper(String baseUrl, Context context, Boolean debugMode, String packageId,@Nullable AppCompatActivity activity) {
+    public static APIRequestInterface getApiHelper(String baseUrl, Context context, Boolean debugMode, String packageId, @Nullable AppCompatActivity activity) {
         if (retrofit == null) {
             if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();
@@ -59,7 +62,7 @@ public final class RetrofitHelper {
         if (helper == null) {
             helper = retrofit.create(APIRequestInterface.class);
         }
-        if (activity != null){
+        if (activity != null) {
             activityListeningForLoggerEvents = activity;
             APILoggInterface = (APILoggInterface) activityListeningForLoggerEvents;
         }
@@ -94,18 +97,32 @@ public final class RetrofitHelper {
         return GsonConverterFactory.create(myGson);
     }
 
+    private static String bodyToString(final RequestBody request) {
+        try {
+            final RequestBody copy = request;
+            final Buffer buffer = new Buffer();
+            if (copy != null)
+                copy.writeTo(buffer);
+            else
+                return "body null";
+            return buffer.readUtf8();
+        } catch (final IOException e) {
+            return "did not work";
+        }
+
+    }
+
     private static OkHttpClient getOkHttpClient(Context context, Boolean debugMode, String packageId) {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
 
         httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
         httpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
-        httpClientBuilder.addInterceptor(new NetworkConnectionInterceptor(context));
 
         httpClientBuilder.addInterceptor(chain -> {
             Request request = chain.request()
                     .newBuilder()
-                    // .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
-                    .addHeader(APIConstants.AUTH_TOKEN_KEY, NetworkApp.getAuthToken())
+                   // .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
+                    .addHeader(APIConstants.AUTH_TOKEN_KEY, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getAuthToken())
                     .addHeader(APIConstants.PACKAGE_ID, NetworkApp.getPackageId())
                     .addHeader(APIConstants.SESSION_PREFIX, NetworkApp.getHeaderToken())
                     .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
@@ -114,10 +131,24 @@ public final class RetrofitHelper {
                     .addHeader(APIConstants.IP_ADDRESS, NetworkApp.getUserIpAddress())
 
                     .build();
+            if (debugMode) {
+                Log.e("dataRequestBody Request", String.valueOf(request.toString()));
+                if (request.body() != null) {
+                    Log.e("dataRequestBody body", bodyToString(request.body()));
+                }
+
+                Log.e("dataRequestBody Headers", String.valueOf(request.headers().toString()));
+                Response response = chain.proceed(request);
+                try {
+                    Log.e("dataRequestBody", response.toString());
+                } catch (Exception ex) {
+                    return response;
+                }
+            }
 
             return chain.proceed(request);
         });
-        httpClientBuilder.addInterceptor(getLogging(debugMode));
+        httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
 
            /* if(debugMode|| NetworkApp.debugMode){
                 httpClientBuilder.addInterceptor(getLogging(debugMode));
@@ -136,7 +167,7 @@ public final class RetrofitHelper {
             public void log(String message) {
                 if (message != null) {
                     Log.d(TAG, "OkHttp: " + message);
-                    if (activityListeningForLoggerEvents != null){
+                    if (activityListeningForLoggerEvents != null) {
                         APILoggInterface.onLoggingEvent(message);
                     }
                 }
