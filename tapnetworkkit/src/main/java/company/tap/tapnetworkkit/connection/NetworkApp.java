@@ -114,7 +114,7 @@ public class NetworkApp {
         applicationInfo.put("cu", CryptoUtil.encryptJsonString(applicationId, encryptionKey));
         applicationInfo.put("aid", CryptoUtil.encryptJsonString(sdkIdentifier, encryptionKey));
         applicationInfo.put("at", CryptoUtil.encryptJsonString("app", encryptionKey));
-        applicationInfo.put("av", CryptoUtil.encryptJsonString("1.0.0", encryptionKey));
+        applicationInfo.put("av", CryptoUtil.encryptJsonString(String.valueOf(Build.VERSION.SDK_INT), encryptionKey));
         applicationInfo.put("rn", CryptoUtil.encryptJsonString(deviceName, encryptionKey));
         applicationInfo.put("rt", CryptoUtil.encryptJsonString(Build.MANUFACTURER, encryptionKey));
         applicationInfo.put("rb", CryptoUtil.encryptJsonString(Build.BRAND, encryptionKey));
