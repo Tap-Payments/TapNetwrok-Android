@@ -44,13 +44,18 @@ public final class RetrofitHelper {
      *
      * @return the api helper
      */
-    public static APIRequestInterface getApiHelper(String baseUrl, Context context, Boolean debugMode, String packageId, @Nullable AppCompatActivity activity) {
+    public static APIRequestInterface getApiHelper(String baseUrl, Context context, Boolean debugMode, String packageId, @Nullable AppCompatActivity activity , @Nullable String authtoken) {
         if (retrofit == null) {
             if (NetworkApp.getAuthToken() == null) {
                 throw new NoAuthTokenProvidedException();
             }
 
-            okHttpClient = getOkHttpClient(context, debugMode, packageId);
+            if(authtoken.contains("pk")){
+                okHttpClient = getOkHttpClientPK(context, debugMode, packageId);
+            }else{
+
+                okHttpClient = getOkHttpClient(context, debugMode, packageId);
+            }
 
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
@@ -123,6 +128,54 @@ public final class RetrofitHelper {
                     .newBuilder()
                    // .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
                     .addHeader(APIConstants.AUTH_TOKEN_KEY, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getAuthToken())
+                    .addHeader(APIConstants.PACKAGE_ID, NetworkApp.getPackageId())
+                    .addHeader(APIConstants.SESSION_PREFIX, NetworkApp.getHeaderToken())
+                    .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())
+                    .addHeader(APIConstants.ACCEPT_KEY, APIConstants.ACCEPT_VALUE)
+                    .addHeader(APIConstants.CONTENT_TYPE_KEY, APIConstants.CONTENT_TYPE_VALUE)
+                    .addHeader(APIConstants.IP_ADDRESS, NetworkApp.getUserIpAddress())
+
+                    .build();
+            if (debugMode) {
+                Log.e("dataRequestBody Request", String.valueOf(request.toString()));
+                if (request.body() != null) {
+                    Log.e("dataRequestBody body", bodyToString(request.body()));
+                }
+
+                Log.e("dataRequestBody Headers", String.valueOf(request.headers().toString()));
+                Response response = chain.proceed(request);
+                try {
+                    Log.e("dataRequestBody", response.toString());
+                } catch (Exception ex) {
+                    return response;
+                }
+            }
+
+            return chain.proceed(request);
+        });
+        httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+
+           /* if(debugMode|| NetworkApp.debugMode){
+                httpClientBuilder.addInterceptor(getLogging(debugMode));
+
+            }else{
+                httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(!BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.NONE : HttpLoggingInterceptor.Level.NONE));
+
+            }
+*/
+        return httpClientBuilder.build();
+    }
+    private static OkHttpClient getOkHttpClientPK(Context context, Boolean debugMode, String packageId) {
+        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
+
+        httpClientBuilder.connectTimeout(30, TimeUnit.SECONDS);
+        httpClientBuilder.readTimeout(30, TimeUnit.SECONDS);
+
+        httpClientBuilder.addInterceptor(chain -> {
+            Request request = chain.request()
+                    .newBuilder()
+                    // .addHeader(APIConstants.TOKEN_PREFIX, APIConstants.AUTH_TOKEN_PREFIX + NetworkApp.getHeaderToken())
+                    .addHeader(APIConstants.AUTH_TOKEN_KEY,   NetworkApp.getAuthToken())
                     .addHeader(APIConstants.PACKAGE_ID, NetworkApp.getPackageId())
                     .addHeader(APIConstants.SESSION_PREFIX, NetworkApp.getHeaderToken())
                     .addHeader(APIConstants.APPLICATION, NetworkApp.getApplicationInfo())

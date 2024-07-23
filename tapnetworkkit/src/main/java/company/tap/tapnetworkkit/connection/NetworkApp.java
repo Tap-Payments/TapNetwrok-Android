@@ -54,7 +54,7 @@ public class NetworkApp {
         NetworkApp.debugMode = debugMode;
 
         initApplicationInfo(appId, sdkIdentifier, encryptionKey);
-        NetworkController.getInstance().setBaseUrl(baseUrl, context, debugMode, appId, activity);
+        NetworkController.getInstance().setBaseUrl(baseUrl, context, debugMode, appId, activity, authToken);
         lo.init(context);
     }
 
@@ -66,7 +66,7 @@ public class NetworkApp {
 
     public static void initNetworkToken(String _headerToken, Context context, String baseUrl, Boolean debugMode,@Nullable AppCompatActivity activity) {
         NetworkApp.headerToken = _headerToken;
-        RetrofitHelper.getApiHelper(baseUrl, context, debugMode, packageId, activity);
+        RetrofitHelper.getApiHelper(baseUrl, context, debugMode, packageId, activity,authToken);
         lo.init(context);
     }
 

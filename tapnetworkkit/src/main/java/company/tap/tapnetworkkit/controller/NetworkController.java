@@ -28,8 +28,8 @@ public class NetworkController {
     /**
      * Required to set baseURL on retrofit
      */
-    public void setBaseUrl(String baseURL, Context context, Boolean debugMode, String packageId, @Nullable AppCompatActivity activity) {
-        apiRequestInterface = RetrofitHelper.getApiHelper(baseURL, context, debugMode,packageId, activity);
+    public void setBaseUrl(String baseURL, Context context, Boolean debugMode, String packageId, @Nullable AppCompatActivity activity ,@Nullable String authtoken) {
+        apiRequestInterface = RetrofitHelper.getApiHelper(baseURL, context, debugMode,packageId, activity, authtoken);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
