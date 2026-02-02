@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements APIRequestCallbac
         /**
          * Store authToken and bundle ID.
          **/
-        AppInfo.setAuthToken(this,"sk_test_kovrMB0mupFJXfNZWx6Etg5y","company.tap.goSellSDKExample");
+        AppInfo.setAuthToken(this,"XXXXXXXX","company.tap.goSellSDKExample");
 
         /**
          * Calling init API
